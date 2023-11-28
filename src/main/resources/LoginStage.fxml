@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.LoginController">
+   <children>
+      <ImageView id="background" fitHeight="762.0" fitWidth="504.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Login/bg.png" />
+         </image>
+      </ImageView>
+      <ImageView id="loginButton" fitHeight="49.0" fitWidth="111.0" layoutX="197.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Login/login_bt.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <TextField id="userName" focusTraversable="false" layoutX="155.0" layoutY="337.0" prefHeight="40.0" prefWidth="194.0" promptText="输入您的用户名或邮箱" style="-fx-background-color: rgb(225,195,126); -fx-text-fill: rgb(0,0,0);">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+      <TextField id="passWord" focusTraversable="false" layoutX="155.0" layoutY="394.0" prefHeight="40.0" prefWidth="194.0" promptText="输入您的密码">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>
