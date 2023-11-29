@@ -29,20 +29,26 @@ public class LoginStage extends Application {
     public static void main(String[] args) {
         launch(args);  //调用start
     }
+
     @Override
     public void start(Stage primaryStage) throws IOException {
+        //加载fxml文件
         URL url = getClass().getResource("/LoginStage.fxml");
+        //加载完fxml文件后，获取其中的root
         Parent root = FXMLLoader.load(Objects.requireNonNull(url));
-        primaryStage.setTitle("HappyMatch");
+        //设置窗体
         primaryStage.setResizable(false);
         primaryStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+        //设置场景
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
+        //
+        //显示窗体
         primaryStage.show();
 
 
-//        鼠标按下事件
+        //鼠标按下事件(窗口自由拖动)
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -52,8 +58,7 @@ public class LoginStage extends Application {
                 oldScreenY = event.getScreenY();
             }
         });
-
-        //鼠标拖拽
+        //鼠标拖拽(窗口自由拖动)
         scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

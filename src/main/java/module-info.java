@@ -5,4 +5,6 @@ module asia.sustech.happymatch {
                             
     opens asia.sustech.happymatch to javafx.fxml;
     exports asia.sustech.happymatch;
+    exports asia.sustech.happymatch.GameController;
+    opens asia.sustech.happymatch.GameController to javafx.fxml;
 }
