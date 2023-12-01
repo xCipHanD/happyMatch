@@ -22,8 +22,6 @@ public class LoginController implements Initializable {
     @FXML
     private TextField userName;
     @FXML
-    private ImageView login_bt_bg;
-    @FXML
     private ImageView close_window;
     @FXML
     private Button register_bt;
@@ -51,7 +49,15 @@ public class LoginController implements Initializable {
     }
     //登录按钮按下
     @FXML
-    void setLogin_bt_bg(MouseEvent event) {
+    void setLogin_bt_pressed(MouseEvent event) {
+        //图片框透明度变化
+        login_img.setOpacity(0.7);
+    }
+    //登录按钮松开
+    @FXML
+    void  setLogin_bt_released(MouseEvent event){
+        //图片框透明度变化
+        login_img.setOpacity(1);
         String username = userName.getText();
         String password = passWord.getText();
         if (username.isEmpty() || password.isEmpty()) {
@@ -71,12 +77,21 @@ public class LoginController implements Initializable {
     }
     //注册按钮按下
     @FXML
-    void setRegister_bt(MouseEvent event) {
+    void setRegister_bt_pressed(MouseEvent event) {
+        //图片框透明度变化
+        register_img.setOpacity(0.7);
+    }
+    //注册按钮松开
+    @FXML
+    void setRegister_bt_released(MouseEvent event) {
+        //图片框透明度变化
+        register_img.setOpacity(1);
+        //跳转注册页面
+
 
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //设置按钮图片
-        Image image = new Image(Objects.requireNonNull(getClass().getResource("/Login/bt.png")).toString());
     }
 }

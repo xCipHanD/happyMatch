@@ -41,7 +41,7 @@
             <Image url="@Login/lbt.png" />
          </image>
       </ImageView>
-      <Button fx:id="login_bt" layoutX="270.0" layoutY="469.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="79.0" text="Button">
+      <Button fx:id="login_bt" layoutX="270.0" layoutY="469.0" mnemonicParsing="false" onMousePressed="#setLogin_bt_pressed" onMouseReleased="#setLogin_bt_released" opacity="0.0" prefHeight="40.0" prefWidth="79.0" text="Button">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -54,7 +54,7 @@
             <Image url="@Login/rbt.png" />
          </image>
       </ImageView>
-      <Button fx:id="register_bt" layoutX="155.0" layoutY="469.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="79.0" text="Button">
+      <Button fx:id="register_bt" layoutX="155.0" layoutY="469.0" mnemonicParsing="false" onMousePressed="#setRegister_bt_pressed" onMouseReleased="#setRegister_bt_released" opacity="0.0" prefHeight="40.0" prefWidth="79.0" text="Button">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -93,6 +93,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text layoutX="148.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; " textAlignment="CENTER" />
+      <Text fill="#52ab4e" layoutX="110.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
    </children>
 </AnchorPane>
