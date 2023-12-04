@@ -1,4 +1,5 @@
 package asia.sustech.happymatch;
 
-public class ForgetPwdStage {
+public class Server {
+
 }

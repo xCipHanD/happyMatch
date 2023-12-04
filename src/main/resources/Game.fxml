@@ -11,17 +11,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.LoginController">
+<AnchorPane prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.Login.LoginController">
    <children>
       <ImageView id="background" fx:id="bg" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Game/bg1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="chessboard" fitHeight="375.0" fitWidth="378.0" layoutX="63.0" layoutY="138.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cb" fitHeight="375.0" fitWidth="378.0" layoutX="63.0" layoutY="138.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Game/chessBoard.png" />
          </image>
       </ImageView>
+      <VBox fx:id="chessboard" layoutX="63.0" layoutY="138.0" prefHeight="372.0" prefWidth="378.0" />
    </children>
 </AnchorPane>

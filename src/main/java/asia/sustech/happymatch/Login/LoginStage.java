@@ -1,4 +1,4 @@
-package asia.sustech.happymatch;
+package asia.sustech.happymatch.Login;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
