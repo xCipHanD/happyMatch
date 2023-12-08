@@ -1,6 +1,8 @@
 module asia.sustech.happymatch {
     requires javafx.controls;
     requires javafx.fxml;
+    requires fastjson;
+    requires java.desktop;
 
 
     opens asia.sustech.happymatch to javafx.fxml;

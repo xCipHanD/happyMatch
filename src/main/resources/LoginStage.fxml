@@ -93,6 +93,16 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
+      <Text fill="#117908" layoutX="292.0" layoutY="498.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="登录">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
       <Text fill="#52ab4e" layoutX="110.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
+      <Text fill="#725600" layoutX="177.0" layoutY="498.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="注册">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

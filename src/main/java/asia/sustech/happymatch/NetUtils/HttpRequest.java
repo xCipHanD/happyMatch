@@ -1,4 +1,4 @@
-package asia.sustech.happymatch;
+package asia.sustech.happymatch.NetUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 
-public class HttpRequests {
+public class HttpRequest {
 
     // 忽略SSL证书验证
     static {
