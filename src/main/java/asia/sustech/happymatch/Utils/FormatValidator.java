@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Scanner;
 
 public class FormatValidator {
     private static final String emailRegex = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
@@ -65,5 +66,33 @@ public class FormatValidator {
         int maxSizeInBytes = 2 * 1024 * 1024;
 
         return avatarSize > maxSizeInBytes;
+    }
+    public static Boolean isMapFormatInvalid(String map) {
+        try {
+            Scanner sc = new Scanner(map);
+            String s1 = sc.nextLine();
+            int targetNum = Integer.parseInt(s1.split(" ")[0]);
+            int row = Integer.parseInt(s1.split(" ")[1]);
+            int col = Integer.parseInt(s1.split(" ")[2]);
+            int blocks = Integer.parseInt(s1.split(" ")[3]);
+            int currentStep = Integer.parseInt(s1.split(" ")[4]);
+            int totalStep = Integer.parseInt(s1.split(" ")[5]);
+
+            String[][] s2 = new String[targetNum][4];
+            for (int i = 0; i < targetNum; i++) {
+                String s = sc.nextLine();
+                System.arraycopy(s.split(" "), 0, s2[i], 0, 4);
+            }
+
+            String[][] s3 = new String[row][col];
+            for (int i = 0; i < row; i++) {
+                String s = sc.nextLine();
+                System.arraycopy(s.split(" "), 0, s3[i], 0, col);
+            }
+            sc.close();
+            return false;
+        } catch (Exception e) {
+            return true;
+        }
     }
 }
