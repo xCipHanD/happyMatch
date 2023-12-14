@@ -4,6 +4,7 @@ import asia.sustech.happymatch.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.API;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.SoundsPlayer;
 import asia.sustech.happymatch.User;
 import com.alibaba.fastjson.JSONObject;
 import javafx.application.Platform;
@@ -69,8 +70,11 @@ public class HallController {
     @FXML
     private ImageView bgmBt;
 
+    //排行榜按钮
     @FXML
     void rankBtPressed(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
         //排行榜
         HttpResult result = HttpRequests.getRankList(User.getToken());
         if (result.getCode() == 200) {
@@ -100,45 +104,59 @@ public class HallController {
         }
     }
 
+    //商店按钮
     @FXML
     void shopBtPressed(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
 
     }
 
+    //签到按钮
     @FXML
-    void signInBtPressed(MouseEvent event) {
+    void signInBtPressed() {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //执行签到请求
         HttpResult result = HttpRequests.signIn(User.getToken());
         if (result.getCode() == 200) {
-            //成功
-            //提示框
+            //成功提示框
             String info = "签到成功！";
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                    ButtonBar.ButtonData.YES));
             alert.setHeaderText(null);
             alert.setTitle("提示");
             alert.showAndWait();
         } else {
-            //失败
-            //提示框
+            //失败提示框
             String info = "签到失败！" + result.getMessage();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                    ButtonBar.ButtonData.YES));
             alert.setHeaderText(null);
             alert.setTitle("提示");
             alert.showAndWait();
         }
     }
 
+    //自定义地图按钮
     @FXML
     void diyMapBtPressed(MouseEvent event) {
-
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
     }
 
+    //修改头像按钮
     @FXML
-    void editAvatarBtPressed(MouseEvent event) {
+    void editAvatarBtPressed() {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //选择图片
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("IMG", "*.jpg", "*.png"));
         fc.setTitle("选择头像");
         File file = fc.showOpenDialog(editBt.getScene().getWindow());
+        //读取图片
         if (file != null) {
             try {
                 // 读取原始图像
@@ -204,11 +222,14 @@ public class HallController {
                 alert.showAndWait();
             }
         }
-
     }
 
+    //背景音乐控制按钮
     @FXML
     void bgmBtPressed(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //切换背景音乐
         if (BGMPlayer.getInstance().isMute()) {
             bgmBt.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Hall/v_on.png"))));
             BGMPlayer.getInstance().setMute(false);
@@ -218,19 +239,27 @@ public class HallController {
         }
     }
 
+    //初始化信息
     @FXML
     public void initialize() {
         genderUserInfo();
     }
 
+    //渲染用户信息
     public void genderUserInfo() {
         userName.setText(User.getUserName());
         userLevelText.setText("Lv." + String.valueOf(User.getLevel()));
         levelText.setText(String.valueOf(User.getLevel()));
         coinsText.setText(String.valueOf(User.getCoins()));
         avatar.setImage(User.getAvatar());
+        if (BGMPlayer.getInstance().isMute()) {
+            bgmBt.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Hall/v_off.png"))));
+        } else {
+            bgmBt.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Hall/v_on.png"))));
+        }
     }
 
+    //esc退出
     @FXML
     void setOnKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ESCAPE) {
@@ -246,6 +275,7 @@ public class HallController {
         }
     }
 
+    //拖动窗口
     @FXML
     void setOnMousePressed(MouseEvent event) {
         try {
@@ -260,6 +290,7 @@ public class HallController {
         }
     }
 
+    //拖动窗口
     @FXML
     void setOnMouseDrag(MouseEvent event) {
         Stage primaryStage = (Stage) rightPane.getScene().getWindow();

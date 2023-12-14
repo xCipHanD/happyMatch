@@ -2,6 +2,7 @@ package asia.sustech.happymatch.Login;
 
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.SoundsPlayer;
 import asia.sustech.happymatch.Utils.FormatValidator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -57,6 +58,7 @@ public class RegisterController {
 
     @FXML
     void setLogin_bt_released(MouseEvent event) {
+        SoundsPlayer.playSound_btnClick1();
         //设置透明度
         login_img.setOpacity(1);
         //格式判断
@@ -112,6 +114,7 @@ public class RegisterController {
 
     @FXML
     void setBack_bt_released(MouseEvent event) throws IOException {
+        SoundsPlayer.playSound_btnClick1();
         //设置透明度
         back_img.setOpacity(1);
         Stage primaryStage = (Stage) back_bt.getScene().getWindow();

@@ -2,6 +2,7 @@ package asia.sustech.happymatch.Login;
 
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.SoundsPlayer;
 import asia.sustech.happymatch.Utils.FormatValidator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -68,6 +69,7 @@ public class ForgetPwdController {
 
     @FXML
     void onResetPwdBtReleased(MouseEvent event) {
+        SoundsPlayer.playSound_btnClick1();
         //设置透明度
         resetPwd_img.setOpacity(1);
         //格式判断
@@ -143,6 +145,7 @@ public class ForgetPwdController {
 
     @FXML
     void setBack(MouseEvent event) throws IOException {
+        SoundsPlayer.playSound_btnClick1();
         Stage primaryStage = (Stage) back.getScene().getWindow();
         //加载fxml文件
         URL url = getClass().getResource("/LoginStage.fxml");
@@ -162,6 +165,7 @@ public class ForgetPwdController {
 
     @FXML
     void onGetCodeBtReleased() {
+        SoundsPlayer.playSound_btnClick1();
         //设置透明度
         getCode_img.setOpacity(1);
         //格式判断

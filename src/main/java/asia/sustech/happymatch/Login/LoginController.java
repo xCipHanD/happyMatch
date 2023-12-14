@@ -4,6 +4,7 @@ import asia.sustech.happymatch.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequest;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.SoundsPlayer;
 import asia.sustech.happymatch.User;
 import asia.sustech.happymatch.Utils.FormatValidator;
 import com.alibaba.fastjson.JSONObject;
@@ -83,6 +84,7 @@ public class LoginController {
     //登录按钮松开
     @FXML
     void setLogin_bt_released(MouseEvent event) {
+        SoundsPlayer.playSound_btnClick();
         //图片框透明度变化
         login_img.setOpacity(1);
         String username = userName.getText();
@@ -174,6 +176,7 @@ public class LoginController {
     //注册按钮松开
     @FXML
     void setRegister_bt_released(MouseEvent event) throws IOException {
+        SoundsPlayer.playSound_btnClick1();
         //图片框透明度变化
         register_img.setOpacity(1);
         //跳转注册页面
@@ -191,6 +194,7 @@ public class LoginController {
     //忘记密码
     @FXML
     void setForget_pwd(MouseEvent event) throws IOException {
+        SoundsPlayer.playSound_btnClick1();
         //跳转注册页面
         Stage primaryStage = (Stage) register_bt.getScene().getWindow();
         //加载fxml文件
@@ -257,6 +261,7 @@ public class LoginController {
 
     @FXML
     void setVoiceBtPressed(MouseEvent event) {
+        SoundsPlayer.playSound_btnClick1();
         if (BGMPlayer.getInstance().isMute()) {
             bgmBt.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Login/v_on.png"))));
             BGMPlayer.getInstance().setMute(false);
