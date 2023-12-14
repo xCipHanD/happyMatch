@@ -1,5 +1,6 @@
 package asia.sustech.happymatch.Login;
 
+import asia.sustech.happymatch.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequest;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
@@ -35,6 +36,7 @@ public class LoginController {
     private double oldStageY;
     private double oldScreenX;
     private double oldScreenY;
+    public ImageView bgmBt;
     public ImageView register_img;
     public ImageView login_img;
     public Text clear;
@@ -235,5 +237,32 @@ public class LoginController {
         Stage primaryStage = (Stage) close_window.getScene().getWindow();
         primaryStage.setX(event.getScreenX() - oldScreenX + oldStageX);
         primaryStage.setY(event.getScreenY() - oldScreenY + oldStageY);
+    }
+
+    @FXML
+    void userNameOnKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            passWord.requestFocus();
+        }
+    }
+
+    @FXML
+    void pwdOnKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            setLogin_bt_released(null);
+        } else if (event.getCode() == KeyCode.TAB) {
+            userName.requestFocus();
+        }
+    }
+
+    @FXML
+    void setVoiceBtPressed(MouseEvent event) {
+        if (BGMPlayer.getInstance().isMute()) {
+            bgmBt.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Login/v_on.png"))));
+            BGMPlayer.getInstance().setMute(false);
+        } else {
+            bgmBt.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Login/v_off.png"))));
+            BGMPlayer.getInstance().setMute(true);
+        }
     }
 }

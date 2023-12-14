@@ -1,5 +1,6 @@
 package asia.sustech.happymatch.Login;
 
+import asia.sustech.happymatch.BGMPlayer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -45,8 +46,9 @@ public class LoginStage extends Application {
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
-        //
         //显示窗体
         primaryStage.show();
+        //播放bgm
+        BGMPlayer.getInstance().play();
     }
 }

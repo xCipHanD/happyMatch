@@ -1,15 +1,23 @@
 package asia.sustech.happymatch;
 
+import asia.sustech.happymatch.NetUtils.API;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 public class User {
     private static User user;
-    public static String userName;
-    public static int uid;
-    public static String email;
-    public static String avatarURL;
-    public static int level;
-    public static int exp;
-    public static String token;
-    public static int coins;
+    private static String userName;
+    private static int uid;
+    private static String email;
+    private static String avatarURL;
+    private static int level;
+    private static int exp;
+    private static String token;
+    private static int coins;
 
     private User(String userName, int uid, String email, String avatarURL, int level, int exp, String token,
                  int coins) {
@@ -96,5 +104,16 @@ public class User {
 
     public static void setCoins(int coins) {
         User.coins = coins;
+    }
+
+    public static Image getAvatar() {
+        System.out.println(API.API + avatarURL);
+        try (InputStream inputStream = new URL(API.API + avatarURL).openStream()) {
+            Image image = new Image(inputStream);
+            return image;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
