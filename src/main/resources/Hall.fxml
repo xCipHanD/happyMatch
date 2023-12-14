@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -11,13 +13,340 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.Login.LoginController">
-   <children>
-      <ImageView id="background" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Register/bg.png" />
-         </image>
-      </ImageView>
-      <Text fill="#52ab4e" layoutX="110.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
-   </children>
+<AnchorPane prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.Login.HallController">
+    <children>
+        <Text fill="#fcfcfc" layoutX="110.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
+        <ImageView id="background" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" style="-fx-clip-shape: circle(50%);">
+            <image>
+                <Image url="@Hall/bg.png" />
+            </image>
+        </ImageView>
+        <HBox layoutX="24.0" layoutY="22.0" prefHeight="60.0" prefWidth="175.0" style="-fx-background-radius: 10; -fx-background-color: rgba(255,255,255,0.45);">
+            <children>
+            <Pane prefHeight="60.0" prefWidth="182.0">
+               <children>
+                      <ImageView fx:id="avatar" fitHeight="60.0" fitWidth="49.0" layoutX="7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                              <Image url="@Hall/01.jpg" />
+                          </image>
+                          <cursor>
+                              <Cursor fx:constant="HAND" />
+                          </cursor>
+                      </ImageView>
+                  <Text fx:id="userName" fill="#3b65ff" layoutX="67.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="userName">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="levelText" fill="#daa002" layoutX="63.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lv.%s">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            </children>
+        </HBox>
+      <HBox layoutX="336.0" layoutY="22.0" prefHeight="49.0" prefWidth="144.0">
+         <children>
+            <Pane prefHeight="63.0" prefWidth="170.0">
+               <children>
+                  <Text fx:id="coinsText" fill="#ff9700" layoutX="12.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="coins" textAlignment="RIGHT" wrappingWidth="87.96875">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ImageView fx:id="coins" fitHeight="35.0" fitWidth="39.0" layoutX="100.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@Hall/coins.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+      <GridPane fx:id="rightPane" layoutX="430.0" layoutY="171.0" prefHeight="300.0" prefWidth="50.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane prefHeight="58.0" prefWidth="63.0" style="-fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 40;">
+               <children>
+                  <ImageView fitHeight="49.0" fitWidth="49.0" onMousePressed="#rankBtPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Hall/rank.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <Text fontSmoothingType="LCD" layoutX="-1.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="排行榜" textAlignment="CENTER" wrappingWidth="52.626953125">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="#0090ff" />
+                              <Stop color="#1f75ff" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane prefHeight="58.0" prefWidth="63.0" style="-fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 40;" GridPane.rowIndex="2">
+               <children>
+                  <ImageView fitHeight="41.0" fitWidth="35.0" layoutX="8.0" layoutY="8.0" onMousePressed="#shopBtPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Hall/shop.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+               <children>
+                  <Text fontSmoothingType="LCD" layoutX="-1.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="商店" textAlignment="CENTER" wrappingWidth="52.626953125">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="#0090ff" />
+                              <Stop color="#1f75ff" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane prefHeight="58.0" prefWidth="63.0" style="-fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 40;" GridPane.rowIndex="4">
+               <children>
+                  <ImageView fitHeight="41.0" fitWidth="35.0" layoutX="8.0" layoutY="8.0" onMousePressed="#loginBtPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Hall/signIn.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+               <children>
+                  <Text fontSmoothingType="LCD" layoutX="-1.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="签到" textAlignment="CENTER" wrappingWidth="52.626953125">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="#0090ff" />
+                              <Stop color="#1f75ff" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </children>
+      </GridPane>
+      <GridPane layoutX="125.0" layoutY="311.0" prefHeight="233.0" prefWidth="255.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="96.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fitHeight="68.0" fitWidth="151.0" layoutX="-30.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Hall/start.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="49.0" fitWidth="49.0" layoutX="18.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Hall/left.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <ImageView fitHeight="49.0" fitWidth="49.0" layoutX="18.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Hall/right.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Text fx:id="levelText" fill="#1a9ddc" layoutX="2.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level" textAlignment="CENTER">
+                     <font>
+                        <Font size="33.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#1a9ddc" layoutX="10.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="关卡" textAlignment="CENTER">
+                     <font>
+                        <Font size="33.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Text fill="#d1ff95" layoutX="3.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="自定义地图" underline="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+               </children>
+            </Pane>
+         </children>
+      </GridPane>
+      <GridPane fx:id="leftPane" layoutX="17.0" layoutY="171.0" prefHeight="300.0" prefWidth="50.0">
+         <children>
+            <Pane prefHeight="58.0" prefWidth="63.0" style="-fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 40;">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="8.0" layoutY="8.0" onMousePressed="#diyMapBtPressed" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@Hall/diy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <Text fontSmoothingType="LCD" layoutX="-1.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="自定义地图" textAlignment="CENTER" wrappingWidth="52.626953125">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="#0090ff" />
+                              <Stop color="#1f75ff" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane prefHeight="58.0" prefWidth="63.0" style="-fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 40;" GridPane.rowIndex="2">
+               <children>
+                  <ImageView fitHeight="41.0" fitWidth="35.0" layoutX="8.0" layoutY="8.0" onMousePressed="#editAvatarBtPressed" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@Hall/avatar.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+               <children>
+                  <Text fontSmoothingType="LCD" layoutX="-1.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="自定义头像" textAlignment="CENTER" wrappingWidth="52.626953125">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="#0090ff" />
+                              <Stop color="#1f75ff" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane prefHeight="58.0" prefWidth="63.0" style="-fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 40;" GridPane.rowIndex="4">
+               <children>
+                  <ImageView fitHeight="41.0" fitWidth="35.0" layoutX="8.0" layoutY="8.0" onMousePressed="#bgmBtPressed" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@Hall/v_on.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+               <children>
+                  <Text fontSmoothingType="LCD" layoutX="8.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="背景音乐" textAlignment="CENTER" wrappingWidth="35.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop color="#0090ff" />
+                              <Stop color="#1f75ff" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+    </children>
 </AnchorPane>

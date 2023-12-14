@@ -67,6 +67,7 @@ public class FormatValidator {
 
         return avatarSize > maxSizeInBytes;
     }
+
     public static Boolean isMapFormatInvalid(String map) {
         try {
             Scanner sc = new Scanner(map);
@@ -94,5 +95,9 @@ public class FormatValidator {
         } catch (Exception e) {
             return true;
         }
+    }
+
+    public static boolean isCodeInvalid(String text) {
+        return text == null || text.length() != 4 || !text.matches("^[0-9]{4}$");
     }
 }

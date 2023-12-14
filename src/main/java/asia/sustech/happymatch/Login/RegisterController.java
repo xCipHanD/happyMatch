@@ -1,6 +1,9 @@
 package asia.sustech.happymatch.Login;
 
+import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.NetUtils.HttpResult;
 import asia.sustech.happymatch.Utils.FormatValidator;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -60,36 +63,47 @@ public class RegisterController {
         if (FormatValidator.isUserNameInvalid(userName.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            alert.setHeaderText("用户名格式错误");
-            alert.setContentText("用户名应为4-10位字母或数字");
+            alert.setHeaderText("用户名格式错误,应为4-10位字母或数字");
             alert.showAndWait();
             return;
         }
         if (FormatValidator.isPasswordInvalid(passWord.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            alert.setHeaderText("密码格式错误");
-            alert.setContentText("密码应为6-16位字母或数字");
+            alert.setHeaderText("密码格式错误,应为6-16位字母或数字");
             alert.showAndWait();
             return;
         }
         if (!passWord1.getText().equals(passWord.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            alert.setHeaderText("两次密码不一致");
-            alert.setContentText("请重新输入");
+            alert.setHeaderText("两次密码不一致,请重新输入");
             alert.showAndWait();
             return;
         }
         if (FormatValidator.isEmailInvalid(email.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            alert.setHeaderText("邮箱格式错误");
-            alert.setContentText("请重新输入");
+            alert.setHeaderText("邮箱格式错误,请重新输入");
             alert.showAndWait();
             return;
         }
+        Thread thread = new Thread(() -> {
+            //发起登录请求
+            Platform.runLater(() -> {
+                HttpResult result = HttpRequests.register(userName.getText(), passWord.getText(), email.getText());
+                String info;
+                //提示用户结果
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("提示");
+                alert.setHeaderText(result.getMessage());
+                alert.showAndWait();
+            });
+        });
+
+        thread.start();
     }
+
     @FXML
     void setBack_bt_pressed(MouseEvent event) {
         //设置透明度
@@ -117,6 +131,7 @@ public class RegisterController {
             setBack_bt_released(null);
         }
     }
+
     @FXML
     void setOnMousePressed(MouseEvent event) {
         Stage primaryStage = (Stage) back_img.getScene().getWindow();
@@ -126,6 +141,7 @@ public class RegisterController {
         oldScreenX = event.getScreenX();
         oldScreenY = event.getScreenY();
     }
+
     @FXML
     void setOnMouseDrag(MouseEvent event) {
         Stage primaryStage = (Stage) back_img.getScene().getWindow();

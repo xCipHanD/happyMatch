@@ -1,73 +1,100 @@
 package asia.sustech.happymatch;
 
 public class User {
-    private final String userName;
-    private final int uid;
-    private final String email;
-    private String avatarURL;
-    private int level;
-    private int exp;
-    private final String token;
-    private int coins;
-    public User(String userName, int uid, String email, String avatarURL, int level, int exp, String token, int coins) {
-        this.userName = userName;
-        this.uid = uid;
-        this.email = email;
-        this.avatarURL = avatarURL;
-        this.level = level;
-        this.exp = exp;
-        this.token = token;
-        this.coins = coins;
+    private static User user;
+    public static String userName;
+    public static int uid;
+    public static String email;
+    public static String avatarURL;
+    public static int level;
+    public static int exp;
+    public static String token;
+    public static int coins;
+
+    private User(String userName, int uid, String email, String avatarURL, int level, int exp, String token,
+                 int coins) {
+        User.userName = userName;
+        User.uid = uid;
+        User.email = email;
+        User.avatarURL = avatarURL;
+        User.level = level;
+        User.exp = exp;
+        User.token = token;
+        User.coins = coins;
     }
 
-    //getters
+    public static User getUser(String userName, int uid, String email, String avatarURL, int level, int exp,
+                               String token,
+                               int coins) {
+        // 如果实例为空，创建一个新实例
+        if (user == null) {
+            user = new User(userName, uid, email, avatarURL, level, exp, token, coins);
+        }
+        // 返回实例
+        return user;
+    }
 
-    public String getUserName() {
+    public static String getUserName() {
         return userName;
     }
 
-    public int getUid() {
+    public static void setUserName(String userName) {
+        User.userName = userName;
+    }
+
+    public static int getUid() {
         return uid;
     }
 
-    public String getEmail() {
+    public static void setUid(int uid) {
+        User.uid = uid;
+    }
+
+    public static String getEmail() {
         return email;
     }
 
-    public String getAvatarURL() {
+    public static void setEmail(String email) {
+        User.email = email;
+    }
+
+    public static String getAvatarURL() {
         return avatarURL;
     }
 
-    public int getLevel() {
+    public static void setAvatarURL(String avatarURL) {
+        User.avatarURL = avatarURL;
+    }
+
+    public static int getLevel() {
         return level;
     }
 
-    public int getExp() {
+    public static void setLevel(int level) {
+        User.level = level;
+    }
+
+    public static int getExp() {
         return exp;
     }
 
-    public String getToken() {
+    public static void setExp(int exp) {
+        User.exp = exp;
+    }
+
+    public static String getToken() {
         return token;
     }
 
-    public int getCoins() {
+    public static void setToken(String token) {
+        User.token = token;
+    }
+
+    public static int getCoins() {
         return coins;
     }
-    //setters
 
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
-
-    public void setCoins(int coins) {
-        this.coins = coins;
+    public static void setCoins(int coins) {
+        User.coins = coins;
     }
 }

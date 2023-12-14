@@ -11,89 +11,112 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.Login.LoginController">
-   <children>
-      <ImageView id="background" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Register/bg.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="204.0" fitWidth="319.0" layoutX="109.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Login/banner.png" />
-         </image>
-      </ImageView>
-      <TextField id="userName" fx:id="userName" focusTraversable="false" layoutX="203.0" layoutY="218.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的用户名" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </TextField>
-      <PasswordField id="passWord" fx:id="passWord" focusTraversable="false" layoutX="202.0" layoutY="317.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的密码" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </PasswordField>
-      <ImageView id="loginButton" fx:id="login_img" fitHeight="40.0" fitWidth="79.0" layoutX="213.0" layoutY="469.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <image>
-            <Image url="@Login/lbt.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="login_bt" layoutX="213.0" layoutY="468.0" mnemonicParsing="false" onMousePressed="#setLogin_bt_pressed" onMouseReleased="#setLogin_bt_released" opacity="0.0" prefHeight="40.0" prefWidth="79.0" text="Button">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <Text fill="#d6ba78" layoutX="155.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="密码:" textAlignment="RIGHT" wrappingWidth="39.240234375">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <Text fill="#d6ba78" layoutX="141.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="用户名:" textAlignment="RIGHT" wrappingWidth="56.0">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <ImageView fx:id="back" fitHeight="51.0" fitWidth="39.0" layoutX="14.0" layoutY="14.0" onMouseReleased="#setClose_window" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <image>
-            <Image url="@back.png" />
-         </image>
-      </ImageView>
-      <Text fill="#52ab4e" layoutX="110.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
-      <Text fill="#d6ba78" layoutX="131.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" text="确认密码:" textAlignment="RIGHT" wrappingWidth="67.240234375">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <PasswordField id="passWord" fx:id="passWord1" focusTraversable="false" layoutX="202.0" layoutY="367.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的密码" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </PasswordField>
-      <Text fill="#d6ba78" layoutX="155.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="邮箱:" textAlignment="RIGHT" wrappingWidth="39.240234375">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <TextField id="userName" fx:id="email" focusTraversable="false" layoutX="202.0" layoutY="267.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的邮箱地址" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </TextField>
-      <Text fill="#d6ba78" layoutX="141.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="验证码:" textAlignment="RIGHT" wrappingWidth="56.0">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <TextField id="userName" fx:id="code" focusTraversable="false" layoutX="202.0" layoutY="416.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的验证码" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </TextField>
-   </children>
+<AnchorPane onKeyPressed="#setOnKeyPressed" onMouseDragged="#setOnMouseDrag" onMousePressed="#setOnMousePressed" prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.Login.ForgetPwdController">
+    <children>
+        <ImageView id="background" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@Register/bg.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="204.0" fitWidth="319.0" layoutX="109.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@Login/banner.png" />
+            </image>
+        </ImageView>
+        <TextField id="userName" fx:id="userName" focusTraversable="false" layoutX="203.0" layoutY="218.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的用户名" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </TextField>
+        <PasswordField id="passWord" fx:id="passWord" focusTraversable="false" layoutX="202.0" layoutY="317.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的密码" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </PasswordField>
+        <ImageView id="loginButton" fx:id="resetPwd_img" fitHeight="40.0" fitWidth="79.0" layoutX="279.0" layoutY="473.0" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <image>
+                <Image url="@Login/lbt.png" />
+            </image>
+        </ImageView>
+        <Text fill="#117908" layoutX="289.0" layoutY="497.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="修改密码">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Button fx:id="resetPwd_bt" layoutX="279.0" layoutY="472.0" mnemonicParsing="false" onMousePressed="#onResetPwdBtPressed" onMouseReleased="#onResetPwdBtReleased" opacity="0.0" prefHeight="40.0" prefWidth="79.0" text="Button">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+        <Text fill="#d6ba78" layoutX="131.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="新的密码:" textAlignment="RIGHT" wrappingWidth="67.240234375">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fill="#d6ba78" layoutX="141.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="用户名:" textAlignment="RIGHT" wrappingWidth="56.0">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <ImageView fx:id="back" fitHeight="51.0" fitWidth="39.0" layoutX="14.0" layoutY="14.0" onMouseReleased="#setBack" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <image>
+                <Image url="@back.png" />
+            </image>
+        </ImageView>
+        <Text fill="#52ab4e" layoutX="110.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
+        <Text fill="#d6ba78" layoutX="131.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" text="确认密码:" textAlignment="RIGHT" wrappingWidth="67.240234375">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <PasswordField id="passWord" fx:id="passWord1" focusTraversable="false" layoutX="202.0" layoutY="367.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的密码" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </PasswordField>
+        <Text fill="#d6ba78" layoutX="155.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="邮箱:" textAlignment="RIGHT" wrappingWidth="39.240234375">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <TextField id="userName" fx:id="email" focusTraversable="false" layoutX="202.0" layoutY="267.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的邮箱地址" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </TextField>
+        <Text fill="#d6ba78" layoutX="141.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="验证码:" textAlignment="RIGHT" wrappingWidth="56.0">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <TextField id="userName" fx:id="code" focusTraversable="false" layoutX="202.0" layoutY="416.0" prefHeight="40.0" prefWidth="161.0" promptText="输入您的验证码" style="-fx-background-color: #D6BA78; -fx-text-fill: #744C2A; -fx-prompt-text-fill: #744C2A;">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </TextField>
+        <ImageView id="loginButton" fx:id="getCode_img" fitHeight="37.0" fitWidth="79.0" layoutX="153.0" layoutY="474.0" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <image>
+                <Image url="@Login/rbt.png" />
+            </image>
+        </ImageView>
+        <Text fill="#725600" layoutX="157.0" layoutY="497.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="获取验证码" wrappingWidth="79.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Text>
+        <Button fx:id="getCode_bt" layoutX="153.0" layoutY="474.0" mnemonicParsing="false" onMousePressed="#onGetCodeBtPressed" onMouseReleased="#onGetCodeBtReleased" opacity="0.0" prefHeight="37.0" prefWidth="79.0" text="Button">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+    </children>
 </AnchorPane>

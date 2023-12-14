@@ -69,7 +69,7 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Text fx:id="forget_pwd" fill="#5c97ff" layoutX="287.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="忘记密码" textAlignment="RIGHT" wrappingWidth="65.0">
+      <Text fx:id="forget_pwd" fill="#5c97ff" layoutX="287.0" layoutY="450.0" onMousePressed="#setForget_pwd" strokeType="OUTSIDE" strokeWidth="0.0" text="忘记密码" textAlignment="RIGHT" wrappingWidth="65.0">
          <font>
             <Font size="15.0" />
          </font>

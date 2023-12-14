@@ -3,6 +3,7 @@ module asia.sustech.happymatch {
     requires javafx.fxml;
     requires fastjson;
     requires java.desktop;
+    requires javafx.media;
 
 
     opens asia.sustech.happymatch to javafx.fxml;
