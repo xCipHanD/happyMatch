@@ -152,4 +152,23 @@ public class HttpRequests {
             throw new RuntimeException(e);
         }
     }
+
+    //获取背包物品
+    public static HttpResult getProperty(String token) {
+        try {
+            String result = HttpRequest.sendGetRequest(String.format(API.GET_ITEMS.toString(), token));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -2,7 +2,7 @@ package asia.sustech.happymatch.NetUtils;
 
 public enum API {
     LOGIN, REGISTER, FORGET_PWD, GET_CODE, USER_INFO, SIGN_IN, RANKLIST, CHANGE_AVATAR, UPDATE_PROCESS,
-    GET_GOODS_LIST, BUY, DIY_MAP, API;
+    GET_GOODS_LIST, BUY, DIY_MAP, API, GET_ITEMS;
 
     @Override
     public String toString() {
@@ -22,6 +22,7 @@ public enum API {
             case GET_GOODS_LIST -> "/shop/getGoodsList?token=%s";
             case BUY -> "/shop/buy?token=%s&itemId=%s";
             case DIY_MAP -> "/diy_map";
+            case GET_ITEMS -> "/user/getProperty?token=%s";
             default -> "";
         };
     }

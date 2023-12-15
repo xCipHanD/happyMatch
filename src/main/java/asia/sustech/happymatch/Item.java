@@ -6,11 +6,14 @@ public class Item {
     private final int price;
     private final int id;
 
-    public Item(String name, String description, int price, int id) {
+    private int count;
+
+    public Item(String name, String description, int price, int id, int count) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.id = id;
+        this.count = count;
     }
 
     public String getName() {
@@ -27,5 +30,13 @@ public class Item {
 
     public int getId() {
         return id;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }
