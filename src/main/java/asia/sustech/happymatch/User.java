@@ -107,7 +107,6 @@ public class User {
     }
 
     public static Image getAvatar() {
-        System.out.println(API.API + avatarURL);
         try (InputStream inputStream = new URL(API.API + avatarURL).openStream()) {
             Image image = new Image(inputStream);
             return image;

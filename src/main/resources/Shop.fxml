@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane onKeyPressed="#setOnKeyPressed" onMouseDragged="#setOnMouseDrag" onMousePressed="#setOnMousePressed" prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.Hall.ShopController">
+   <children>
+      <ImageView id="background" fx:id="bg" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Shop/bg.png" />
+         </image>
+      </ImageView>
+      <HBox layoutX="346.0" layoutY="32.0" prefHeight="49.0" prefWidth="144.0">
+         <children>
+            <Pane prefHeight="63.0" prefWidth="170.0">
+               <children>
+                  <Text fx:id="coinsText" fill="#ffa200" layoutX="12.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="coins" textAlignment="RIGHT" wrappingWidth="87.96875">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ImageView fx:id="coins" fitHeight="35.0" fitWidth="39.0" layoutX="100.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@Hall/coins.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+      <ImageView fx:id="back" fitHeight="51.0" fitWidth="39.0" layoutX="34.0" layoutY="34.0" onMouseReleased="#setBack" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@back.png" />
+         </image>
+      </ImageView>
+      <GridPane layoutX="73.0" layoutY="174.0" prefHeight="337.0" prefWidth="363.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="108.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="212.0" minHeight="0.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="212.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="212.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="212.0" minHeight="0.0" prefHeight="60.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="49.0" fitWidth="45.0" layoutX="23.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Game/items/item1.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <Text fx:id="name1" fill="#b77801" layoutX="-12.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Text>
+                        <Text fx:id="desp1" fill="#b77801" layoutX="-12.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discription" wrappingWidth="124.96875" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                     <children>
+                        <Text fx:id="processText" fill="#287bae" layoutX="28.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="已拥有 : %s" />
+                        <Text fx:id="costText" fill="#f23127" layoutX="28.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="花费 : %s">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Text>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                     <children>
+                        <ImageView fx:id="buyBt" fitHeight="43.0" fitWidth="62.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Shop/buy.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="2">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+      <Text fill="#f4708c" layoutX="161.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="道具商城" wrappingWidth="183.0">
+         <font>
+            <Font size="45.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

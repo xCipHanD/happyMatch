@@ -106,9 +106,20 @@ public class HallController {
 
     //商店按钮
     @FXML
-    void shopBtPressed(MouseEvent event) {
+    void shopBtPressed(MouseEvent event) throws IOException {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
+        //跳转页面
+        Stage primaryStage = (Stage) coinsText.getScene().getWindow();
+        //加载fxml文件
+        URL url = getClass().getResource("/Shop.fxml");
+        //加载完fxml文件后，获取其中的root
+        Parent root = FXMLLoader.load(Objects.requireNonNull(url));
+        //设置场景
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(scene);
+
 
     }
 
@@ -120,6 +131,10 @@ public class HallController {
         //执行签到请求
         HttpResult result = HttpRequests.signIn(User.getToken());
         if (result.getCode() == 200) {
+            //更新金币
+            HttpResult result1 = HttpRequests.getUserInfo(User.getToken());
+            User.setCoins(result1.getData().getInteger("coins"));
+            genderUserInfo();
             //成功提示框
             String info = "签到成功！";
             Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
