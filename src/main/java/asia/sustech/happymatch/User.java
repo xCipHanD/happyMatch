@@ -2,7 +2,6 @@ package asia.sustech.happymatch;
 
 import asia.sustech.happymatch.NetUtils.API;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;

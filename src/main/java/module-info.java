@@ -16,4 +16,6 @@ module asia.sustech.happymatch {
     opens asia.sustech.happymatch.Hall to javafx.fxml;
     exports asia.sustech.happymatch.Ending;
     opens asia.sustech.happymatch.Ending to javafx.fxml;
+    exports asia.sustech.happymatch.Utils;
+    opens asia.sustech.happymatch.Utils to javafx.fxml;
 }

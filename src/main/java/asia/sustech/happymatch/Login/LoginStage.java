@@ -1,26 +1,16 @@
 package asia.sustech.happymatch.Login;
 
-import asia.sustech.happymatch.BGMPlayer;
+import asia.sustech.happymatch.Utils.BGMPlayer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 
 public class LoginStage extends Application {

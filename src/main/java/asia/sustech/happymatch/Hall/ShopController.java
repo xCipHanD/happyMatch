@@ -1,15 +1,14 @@
 package asia.sustech.happymatch.Hall;
 
-import asia.sustech.happymatch.SoundsPlayer;
+import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.Utils.SoundsPlayer;
+import asia.sustech.happymatch.User;
+import com.alibaba.fastjson.JSONObject;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -66,6 +65,15 @@ public class ShopController {
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
+    }
+
+    @FXML
+    public void initialize() {
+        //商店仅作功能展示，无需动态添加物品
+        JSONObject data = HttpRequests.getItemsList(User.getToken()).getData();
+        name1.setText(data.getJSONObject("1").getString("name"));
+        desp1.setText(data.getJSONObject("1").getString("description"));
+        costText.setText("花费 : " + data.getJSONObject("1").getString("price"));
     }
 
     //esc退出

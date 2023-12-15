@@ -2,7 +2,7 @@ package asia.sustech.happymatch.Login;
 
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
-import asia.sustech.happymatch.SoundsPlayer;
+import asia.sustech.happymatch.Utils.SoundsPlayer;
 import asia.sustech.happymatch.Utils.FormatValidator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

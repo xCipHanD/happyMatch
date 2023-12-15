@@ -1,18 +1,14 @@
 package asia.sustech.happymatch.Login;
 
-import asia.sustech.happymatch.BGMPlayer;
-import asia.sustech.happymatch.NetUtils.HttpRequest;
+import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
-import asia.sustech.happymatch.SoundsPlayer;
+import asia.sustech.happymatch.Utils.SoundsPlayer;
 import asia.sustech.happymatch.User;
 import asia.sustech.happymatch.Utils.FormatValidator;
 import com.alibaba.fastjson.JSONObject;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -25,12 +21,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class LoginController {
     private double oldStageX;

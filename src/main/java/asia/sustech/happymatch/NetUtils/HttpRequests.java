@@ -133,4 +133,23 @@ public class HttpRequests {
             throw new RuntimeException(e);
         }
     }
+
+    //获取商品列表
+    public static HttpResult getItemsList(String token) {
+        try {
+            String result = HttpRequest.sendGetRequest(String.format(API.GET_GOODS_LIST.toString(), token));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
