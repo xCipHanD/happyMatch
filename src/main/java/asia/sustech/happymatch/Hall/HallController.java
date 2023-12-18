@@ -335,6 +335,7 @@ public class HallController {
         } else {
             System.out.println("关卡:" + Map.mapId);
         }
+        goToGamePage();
     }
 
     //左调关卡按钮
@@ -365,7 +366,7 @@ public class HallController {
 
     //自定义地图开始按钮
     @FXML
-    void onDiyStartBtnReleased(MouseEvent event) {
+    void onDiyStartBtnReleased(MouseEvent event) throws IOException {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         //弹出输入框
@@ -387,6 +388,30 @@ public class HallController {
                 alert.showAndWait();
                 return;
             }
+            //获取地图信息
+            Map map = Map.getDiyMap(result.get());
+            System.out.printf("关卡:%d\n", Map.mapId);
+            System.out.println(Arrays.deepToString(Map.mapData));
+
         }
+    }
+
+    //切换到游戏场景
+    private void goToGamePage() {
+        //跳转页面
+        Stage primaryStage = (Stage) coinsText.getScene().getWindow();
+        //加载fxml文件
+        URL url = getClass().getResource("/Game.fxml");
+        //加载完fxml文件后，获取其中的root
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //设置场景
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(scene);
     }
 }

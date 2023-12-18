@@ -24,6 +24,7 @@ public class BGMPlayer {
 
     public void play() {
         mediaPlayer.play();
+        setVolume(0.1);
     }
 
     public void stop() {

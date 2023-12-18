@@ -1,11 +1,13 @@
 package asia.sustech.happymatch.GameController;
 
+import asia.sustech.happymatch.NetUtils.API;
 import asia.sustech.happymatch.NetUtils.HttpRequest;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
 import asia.sustech.happymatch.User;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Map {
     //地图长宽
@@ -44,6 +46,7 @@ public class Map {
             //解析地图数据
             String[] mapDataString = result.getData().getString("map").split("\n");
             String[] fistLine = mapDataString[0].split(" ");
+            Map.mapId = Integer.parseInt(fistLine[0]);
             Map.blockCount = Integer.parseInt(fistLine[1]);
             Map.currentStep = Integer.parseInt(fistLine[2]);
             Map.maxStep = Integer.parseInt(fistLine[3]);
@@ -63,25 +66,25 @@ public class Map {
     }
 
     //获取自定义地图
-    public static Map getDiyMap(String code) {
+    public static Map getDiyMap(String code) throws IOException {
         //从服务器获取地图数据
-        String result = HttpRequest.sendGetRequest(String.format("/res/diyMaps/" + code));
-        if (result.getCode() != 200) {
+        String result = HttpRequest.sendGetRequest(API.API + "/res/diyMaps/" + code);
+        if (result.isEmpty()) {
             return null;
         }
+        Scanner sc = new Scanner(result);
+
         //解析地图数据
-        String[] mapDataString = result.getData().getString("map").split("\n");
-        String[] fistLine = mapDataString[0].split(" ");
-        Map.blockCount = Integer.parseInt(fistLine[1]);
-        Map.currentStep = Integer.parseInt(fistLine[2]);
-        Map.maxStep = Integer.parseInt(fistLine[3]);
-        Map.currentScore = Integer.parseInt(fistLine[4]);
-        Map.targetScore = Integer.parseInt(fistLine[5]);
-        Map.swapMapItemUsedCount = Integer.parseInt(fistLine[6]);
+        Map.mapId = sc.nextInt();
+        Map.blockCount = sc.nextInt();
+        Map.currentStep = sc.nextInt();
+        Map.maxStep = sc.nextInt();
+        Map.currentScore = sc.nextInt();
+        Map.targetScore = sc.nextInt();
+        Map.swapMapItemUsedCount = sc.nextInt();
         for (int i = 0; i < 8; i++) {
-            String[] line = mapDataString[i + 1].split(" ");
             for (int j = 0; j < 8; j++) {
-                Map.mapData[i][j] = Integer.parseInt(line[j]);
+                Map.mapData[i][j] = sc.nextInt();
             }
         }
         mapObject = new Map();

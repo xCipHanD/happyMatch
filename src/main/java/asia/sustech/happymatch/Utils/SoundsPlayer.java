@@ -37,6 +37,9 @@ public class SoundsPlayer {
             } catch (LineUnavailableException | IOException e) {
                 throw new RuntimeException(e);
             }
+            //设置音量
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-10.0f);
             clip.start();
         });
         thread.start();

@@ -78,7 +78,7 @@ public class LoginController {
     //登录按钮松开
     @FXML
     void setLogin_bt_released(MouseEvent event) {
-        SoundsPlayer.playSound_btnClick();
+        SoundsPlayer.playSound_btnClick1();
         //图片框透明度变化
         login_img.setOpacity(1);
         //检查用户名和密码格式
