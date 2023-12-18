@@ -1,4 +1,4 @@
-package project;
+package asia.sustech.happymatch.GameController.UnMerged;
 
 import java.util.Random;
 
@@ -30,7 +30,7 @@ public class createMap {
             }
             allMap[k] = map;//存入尝试地图库
         }
-        this.map=getBestMap(allMap);
+        this.map = getBestMap(allMap);
     }
 
     public int[][] getMap() {

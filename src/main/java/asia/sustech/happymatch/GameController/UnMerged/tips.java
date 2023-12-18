@@ -1,46 +1,46 @@
-package project;
+package asia.sustech.happymatch.GameController.UnMerged;
 
-import static project.eliminate.printWall;
 
 public class tips {
-    public static int[] tips(int map[][]){
-        int row[][]=rowScan(map);
-        int col[][]=colScan(map);
-        int count=0;
-        for (int i = 0; i <row.length ; i++) {
-            for (int j = 0; j <row.length ; j++) {
-                if (row[i][j]==9){
+    public static int[] tips(int map[][]) {
+        int row[][] = rowScan(map);
+        int col[][] = colScan(map);
+        int count = 0;
+        for (int i = 0; i < row.length; i++) {
+            for (int j = 0; j < row.length; j++) {
+                if (row[i][j] == 9) {
                     count++;
                 }
-                if (col[i][j]==9){
+                if (col[i][j] == 9) {
                     count++;
                 }
             }
         }
-        int tips[][]=new int[count][2];
-        int count1=0;
-        for (int i = 0; i <row.length ; i++) {
-            for (int j = 0; j <row.length ; j++) {
-                if (row[i][j]==9){
-                    tips[count1][0]=i;
-                    tips[count1][1]=j;
+        int tips[][] = new int[count][2];
+        int count1 = 0;
+        for (int i = 0; i < row.length; i++) {
+            for (int j = 0; j < row.length; j++) {
+                if (row[i][j] == 9) {
+                    tips[count1][0] = i;
+                    tips[count1][1] = j;
                     count1++;
                 }
-                if (col[i][j]==9){
-                    tips[count1][0]=i;
-                    tips[count1][1]=j;
+                if (col[i][j] == 9) {
+                    tips[count1][0] = i;
+                    tips[count1][1] = j;
                     count1++;
                 }
             }
         }
-        int tip[]=new int[2];
-        tip[0]=tips[0][0];
-        tip[1]=tips[0][1];
+        int tip[] = new int[2];
+        tip[0] = tips[0][0];
+        tip[1] = tips[0][1];
         return tip;
     }
+
     public static int[][] rowScan(int map[][]) {
-        int arr1[][] = printWall(map);
-        int bigMap[][] = printWall(map);
+        int arr1[][] = eliminate.printWall(map);
+        int bigMap[][] = eliminate.printWall(map);
         for (int i = 3; i < 13; i++) {
             for (int j = 3; j < 13; j++) {
                 //五消aa aa
@@ -159,7 +159,7 @@ public class tips {
 
     public static int[][] colScan(int map[][]) {
         int[][] bigMap1;
-        bigMap1 = printWall(map);
+        bigMap1 = eliminate.printWall(map);
         int bigMap[][] = new int[bigMap1.length][bigMap1.length];
         int arr1[][] = new int[bigMap1.length][bigMap1.length];
         for (int i = 0; i < bigMap1.length; i++) {

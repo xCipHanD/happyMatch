@@ -81,10 +81,12 @@ public class LoginController {
         SoundsPlayer.playSound_btnClick();
         //图片框透明度变化
         login_img.setOpacity(1);
+        //检查用户名和密码格式
         String username = userName.getText();
         String password = passWord.getText();
         if ((FormatValidator.isUserNameInvalid(username) && FormatValidator.isEmailInvalid(username)) ||
                 FormatValidator.isPasswordInvalid(password)) {
+            //提示框
             String info = "用户名或密码格式不正确！";
             Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES));
             alert.setHeaderText(null);

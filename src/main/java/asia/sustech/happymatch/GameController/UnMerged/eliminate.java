@@ -1,22 +1,25 @@
-package project;
+package asia.sustech.happymatch.GameController.UnMerged;
 
 public class eliminate {
     private int[][] map;
-//
+
+    //
     public eliminate() {
         createMap createMap = new createMap();
         this.map = createMap.getMap();
     }
+
     //
-    public static int countOfTheEliminateTime(int map[][]){
-        int rolTimes=rowScan(map);
-        int colTimes=colScan(map);
-        return rolTimes+colTimes;
+    public static int countOfTheEliminateTime(int map[][]) {
+        int rolTimes = rowScan(map);
+        int colTimes = colScan(map);
+        return rolTimes + colTimes;
     }
+
     //
     public static int[][] eliminate(int map[][]) {
-        int arr[][]=printWall(map);
-        int arr2[][]=new int[arr.length][arr.length];
+        int arr[][] = printWall(map);
+        int arr2[][] = new int[arr.length][arr.length];
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length; j++) {
                 arr2[i][j] = arr[i][j];
@@ -73,10 +76,11 @@ public class eliminate {
         }
         return arr1;
     }
+
     //
     public static boolean canBeEliminate(int map[][]) {
-        int arr[][]=printWall(map);
-        int arr2[][]=new int[arr.length][arr.length];
+        int arr[][] = printWall(map);
+        int arr2[][] = new int[arr.length][arr.length];
         //
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length; j++) {
@@ -86,7 +90,7 @@ public class eliminate {
         }
         //
         int arr1[][] = new int[arr.length][arr.length];
-        boolean flag=false;
+        boolean flag = false;
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length; j++) {
                 //列 aaaaa
@@ -96,7 +100,7 @@ public class eliminate {
                     arr1[i][j + 2] = 9;
                     arr1[i][j + 3] = 9;
                     arr1[i][j + 4] = 9;
-                    flag= true;
+                    flag = true;
                 }
                 //列 aaaa
                 if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2] && arr[i][j] == arr[i][j + 3]) {
@@ -104,14 +108,14 @@ public class eliminate {
                     arr1[i][j + 1] = 9;
                     arr1[i][j + 2] = 9;
                     arr1[i][j + 3] = 9;
-                    flag= true;
+                    flag = true;
                 }
                 //列 aaa
                 if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2]) {
                     arr1[i][j] = 9;
                     arr1[i][j + 1] = 9;
                     arr1[i][j + 2] = 9;
-                    flag= true;
+                    flag = true;
                 }
                 //行 aaaaa
                 if (arr2[i][j] == arr2[i][j + 1] && arr2[i][j] == arr2[i][j + 2] && arr2[i][j] == arr2[i][j + 3] && arr2[i][j] == arr2[i][j + 4]) {
@@ -120,7 +124,7 @@ public class eliminate {
                     arr1[i][j + 2] = 9;
                     arr1[i][j + 3] = 9;
                     arr1[i][j + 4] = 9;
-                    flag= true;
+                    flag = true;
                 }
                 //行 aaaa
                 if (arr2[i][j] == arr2[i][j + 1] && arr2[i][j] == arr2[i][j + 2] && arr2[i][j] == arr2[i][j + 3]) {
@@ -128,16 +132,15 @@ public class eliminate {
                     arr1[i][j + 1] = 9;
                     arr1[i][j + 2] = 9;
                     arr1[i][j + 3] = 9;
-                    flag= true;
+                    flag = true;
                 }
                 //行 aaa
                 if (arr2[i][j] == arr2[i][j + 1] && arr2[i][j] == arr2[i][j + 2]) {
                     arr1[i][j] = 9;
                     arr1[i][j + 1] = 9;
                     arr1[i][j + 2] = 9;
-                    flag= true;
-                }
-                else flag=false;
+                    flag = true;
+                } else flag = false;
             }
         }
         return flag;
@@ -171,7 +174,7 @@ public class eliminate {
     }
 
     public static int rowScan(int map[][]) {
-        int count=0;
+        int count = 0;
         int bigMap[][] = printWall(map);
         for (int i = 3; i < 13; i++) {
             for (int j = 3; j < 13; j++) {
@@ -249,7 +252,7 @@ public class eliminate {
     }
 
     public static int colScan(int map[][]) {
-        int count=0;
+        int count = 0;
         int bigMap1[][];
         bigMap1 = printWall(map);
         int bigMap[][] = new int[bigMap1.length][bigMap1.length];
@@ -334,6 +337,7 @@ public class eliminate {
         }
         return count;
     }
+
     public static int[][] dropArray(int[][] map) {
         int rows = map.length;
         int cols = map[0].length;
@@ -341,8 +345,8 @@ public class eliminate {
         for (int j = 0; j < cols; j++) {
             int dropIndex = -1; // 记录要下落到的位置
 
-            for (int i = rows-1; i >= 0; i--) {
-                if (map[i][j] != 9||map[i][j]!=-1) {
+            for (int i = rows - 1; i >= 0; i--) {
+                if (map[i][j] != 9 || map[i][j] != -1) {
                     if (dropIndex != -1) {
                         map[dropIndex][j] = map[i][j]; // 下落到dropIndex位置
                         map[i][j] = 9; // 当前位置置0
@@ -355,6 +359,7 @@ public class eliminate {
         }
         return map;
     }
+
     public static void swap(int[][] map, int row1, int col1, int row2, int col2) {
         int temp = map[row1][col1];
         map[row1][col1] = map[row2][col2];
