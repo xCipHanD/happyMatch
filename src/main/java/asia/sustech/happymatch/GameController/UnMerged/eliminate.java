@@ -1,12 +1,8 @@
-package project;
+package asia.sustech.happymatch.GameController.UnMerged;
 
 public class eliminate {
     private int[][] map;
 //
-    public eliminate() {
-        createMap createMap = new createMap();
-        this.map = createMap.getMap();
-    }
     //
     public static int countOfTheEliminateTime(int map[][]){
         int rolTimes=rowScan(map);

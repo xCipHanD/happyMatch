@@ -6,8 +6,8 @@ import java.util.Arrays;
 //5,6,7-->墙
 //-1-->死方块
 public class Test {
-    public static void main(String[] args) {
-        createMap createMap=new createMap();
-        System.out.println(Arrays.deepToString(createMap.allMap));
-    }
+//    public static void main(String[] args) {
+//        createMap createMap=new createMap();
+//        System.out.println(Arrays.deepToString(createMap.allMap));
+//    }
 }

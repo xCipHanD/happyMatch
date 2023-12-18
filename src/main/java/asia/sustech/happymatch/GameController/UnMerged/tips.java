@@ -1,6 +1,7 @@
-package project;
+package asia.sustech.happymatch.GameController.UnMerged;
 
-import static project.eliminate.printWall;
+
+import static asia.sustech.happymatch.GameController.UnMerged.eliminate.printWall;
 
 public class tips {
     public static int[] tips(int map[][]){

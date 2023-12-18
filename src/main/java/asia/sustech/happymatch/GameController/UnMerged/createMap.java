@@ -1,4 +1,4 @@
-package project;
+package asia.sustech.happymatch.GameController.UnMerged;
 
 import java.util.Random;
 
@@ -21,11 +21,13 @@ public class createMap {
     public int allMap[][][] = new int[100][rol][col];
 
     //创造地图
-    public createMap() {
+    public createMap(int map[][]) {
         for (int k = 0; k < 100; k++) {
             for (int i = 0; i < rol; i++) {
                 for (int j = 0; j < col; j++) {
-                    map[i][j] = random.nextInt(1, 4);
+                    if (map[i][j]==0){
+                        map[i][j] = random.nextInt(1, 4);
+                    }else map[i][j]=-1;
                 }
             }
             allMap[k] = map;//存入尝试地图库
