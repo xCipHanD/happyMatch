@@ -8,7 +8,8 @@ public class stateOfTheMap {
             return false;
         } else return true;
     }
-//行是否可消
+
+    //行是否可消
     public static boolean stateOfRowScan(int map[][]) {
         boolean flag = false;
         int bigMap[][] = eliminate.printWall(map);
@@ -86,7 +87,8 @@ public class stateOfTheMap {
         }
         return flag;
     }
-//列是否可消
+
+    //列是否可消
     public static boolean stateOfColScan(int map[][]) {
         int bigMap1[][];
         boolean flag = false;

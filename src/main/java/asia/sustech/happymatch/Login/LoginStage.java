@@ -14,10 +14,6 @@ import java.util.Objects;
 
 
 public class LoginStage extends Application {
-    private double oldStageX;
-    private double oldStageY;
-    private double oldScreenX;
-    private double oldScreenY;
 
     public static void main(String[] args) {
         launch(args);  //调用start

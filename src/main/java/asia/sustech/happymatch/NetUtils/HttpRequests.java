@@ -171,4 +171,87 @@ public class HttpRequests {
             throw new RuntimeException(e);
         }
     }
+
+    //跟据地图id获取地图
+    public static HttpResult getMapByID(String token, int mapId) {
+        try {
+            String result = HttpRequest.sendGetRequest(String.format(API.MAP_GET.toString(), token, mapId));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //跟据token获取进度
+    public static HttpResult getProcessMap(String token) {
+        try {
+            String result = HttpRequest.sendGetRequest(String.format(API.MAP_GET_PROCESS.toString(), token));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //保存地图进度
+    public static HttpResult saveProcessMap(String token, String map) {
+        try {
+            String result = HttpRequest.sendPostRequest(API.MAP_SAVE_PROCESS.toString(),
+                    String.format("{\"token\":\"%s\",\"map\":\"%s\"}", token, map));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //保存diy地图
+    public static HttpResult saveDiyMap(String token, String map) {
+        try {
+            String result = HttpRequest.sendPostRequest(API.DIY_MAP_SAVE.toString(),
+                    String.format("{\"token\":\"%s\",\"map\":\"%s\"}", token, map));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
 }

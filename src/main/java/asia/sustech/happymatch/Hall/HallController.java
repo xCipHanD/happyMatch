@@ -1,8 +1,10 @@
 package asia.sustech.happymatch.Hall;
 
+import asia.sustech.happymatch.GameController.Map;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.Utils.FormatValidator;
 import asia.sustech.happymatch.Utils.SoundsPlayer;
 import asia.sustech.happymatch.User;
 import com.alibaba.fastjson.JSONObject;
@@ -14,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -28,11 +31,13 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Objects;
 import java.io.File;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 
 public class HallController {
@@ -309,5 +314,79 @@ public class HallController {
         Stage primaryStage = (Stage) rightPane.getScene().getWindow();
         primaryStage.setX(event.getScreenX() - oldScreenX + oldStageX);
         primaryStage.setY(event.getScreenY() - oldScreenY + oldStageY);
+    }
+
+    //开始按钮按下
+    @FXML
+    void onStartBtnReleased(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //获取地图信息
+        Map map = Map.getMap(Integer.parseInt(levelText.getText()));
+        if (map == null) {
+            //提示框
+            String info = "获取地图失败！";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                    ButtonBar.ButtonData.YES));
+            alert.setHeaderText(null);
+            alert.setTitle("提示");
+            alert.showAndWait();
+            return;
+        } else {
+            System.out.println("关卡:" + Map.mapId);
+        }
+    }
+
+    //左调关卡按钮
+    @FXML
+    void leftLevelReleased(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //调整关卡
+        int level = Integer.parseInt(levelText.getText());
+        if (level > 1) {
+            level--;
+            levelText.setText(String.valueOf(level));
+        }
+    }
+
+    //右调关卡按钮
+    @FXML
+    void rightLevelReleased(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //调整关卡
+        int level = Integer.parseInt(levelText.getText());
+        if (level < User.getLevel()) {
+            level++;
+            levelText.setText(String.valueOf(level));
+        }
+    }
+
+    //自定义地图开始按钮
+    @FXML
+    void onDiyStartBtnReleased(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //弹出输入框
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("自定义地图");
+        dialog.setHeaderText("请输入地图ID");
+        dialog.setContentText("地图信息：");
+        //获取输入
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            //检查输入
+            if (FormatValidator.isDiyCodeInvalid(result.get())) {
+                //提示框
+                String info = "地图信息格式错误！";
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                        ButtonBar.ButtonData.YES));
+                alert.setHeaderText(null);
+                alert.setTitle("提示");
+                alert.showAndWait();
+                return;
+            }
+        }
     }
 }
