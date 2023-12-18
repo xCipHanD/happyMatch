@@ -1,4 +1,4 @@
-package project;
+package asia.sustech.happymatch.GameController.UnMerged;
 
 import java.util.Arrays;
 //9-->要消去的方块

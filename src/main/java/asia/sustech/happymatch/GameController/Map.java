@@ -63,7 +63,7 @@ public class Map {
     }
 
     //获取自定义地图
-    public static Map getDiyMap(String code) {
+    public static Map getDiyMap(String code) throws IOException {
         //从服务器获取地图数据
         String result = HttpRequest.sendGetRequest(String.format("/res/diyMaps/" + code));
         if (result.getCode() != 200) {
