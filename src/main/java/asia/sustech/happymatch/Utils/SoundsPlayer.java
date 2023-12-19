@@ -4,6 +4,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 public class SoundsPlayer {
 
@@ -14,6 +15,33 @@ public class SoundsPlayer {
     public static void playSound_btnClick1() {
         play("/Sounds/btnClick1.wav");
     }
+
+    public static void playSound_btnClick2() {play("/Sounds/btnClick2.wav");}
+
+    public static void playSound_match() {
+        Random rd = new Random();
+        int i = rd.nextInt(3);
+        switch (i) {
+            case 0:
+                play("/Sounds/match.wav");
+                break;
+            case 1:
+                play("/Sounds/match1.wav");
+                break;
+            case 2:
+                play("/Sounds/match2.wav");
+                break;
+        }
+    }
+
+    public static void playSound_Excellent() {play("/Sounds/excellent.wav");}
+
+    public static void playSound_Wow() {play("/Sounds/wow.wav");}
+
+    public static void playSound_Amazing() {play("/Sounds/amazing.wav");}
+
+    public static void playSound_Win() {play("/Sounds/win.wav");}
+
 
     public void playSound3() {
         play("path/to/your/sound3.wav");

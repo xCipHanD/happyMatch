@@ -1,5 +1,8 @@
 package asia.sustech.happymatch.GameController.UnMerged;
 
+import asia.sustech.happymatch.GameController.Eliminate;
+import asia.sustech.happymatch.GameController.MapController;
+
 import java.util.Random;
 
 public class createMap {
@@ -42,7 +45,7 @@ public class createMap {
     //寻找最佳地图
     public static int[][] getBestMap(int[][][] allMap) {
         int count[] = new int[100];
-        int bestMap[][] = new int[8][8];
+        int[][] bestMap = new int[8][8];
         for (int i = 0; i < 100; i++) {
             int map[][] = new int[8][8];
             for (int j = 0; j < 8; j++) {
@@ -53,19 +56,16 @@ public class createMap {
                 }
             }
             // 对每个二维数组执行你的操作
-            while (eliminate.canBeEliminate(map)) {
+            while (MapController.calcCountsAfterMatches(map) > 0) {
                 map = eliminate.dropArray(eliminate.eliminate(map));
             }
             count[i] = eliminate.countOfTheEliminateTime(map);
         }
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                bestMap[i][j] = allMap[findTheIndexOfMaxValue(count)][i][j];
-            }
-        }
+
         return bestMap;
     }
-//寻找数字最大的数以及其位置
+
+    //寻找数字最大的数以及其位置
     public static int findTheIndexOfMaxValue(int[] array) {
         int max = Integer.MIN_VALUE;  // 当前的最大值
         int maxIndex = -1;  // 最大值的索引

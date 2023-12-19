@@ -72,79 +72,172 @@ public class eliminate {
         return arr1;
     }
 
-    //
-    public static boolean canBeEliminate(int map[][]) {
-        int arr[][] = printWall(map);
-        int arr2[][] = new int[arr.length][arr.length];
-        //
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                arr2[i][j] = arr[i][j];
-                arr[i][j] = arr[j][i];
+    //计算有多少分，可以判断是否存在消除，如果存在消除，就可以进行消除
+    public static int calcCountsAfterMatches(int[][] map) {
+        int count = 0;
+        int[][] map1 = map.clone();
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                // 八连
+                if (j < map[i].length - 7 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
+                        && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4] && map[i][j] == map[i][j + 5]
+                        && map[i][j] == map[i][j + 6] && map[i][j] == map[i][j + 7]) {
+                    map[i][j] = '0';
+                    map[i][j + 1] = '0';
+                    map[i][j + 2] = '0';
+                    map[i][j + 3] = '0';
+                    map[i][j + 4] = '0';
+                    map[i][j + 5] = '0';
+                    map[i][j + 6] = '0';
+                    map[i][j + 7] = '0';
+                    j += 7;
+                    count += 80;
+                }
+                // 七连
+                if (j < map[i].length - 6 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
+                        && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4] && map[i][j] == map[i][j + 5]
+                        && map[i][j] == map[i][j + 6]) {
+                    map[i][j] = '0';
+                    map[i][j + 1] = '0';
+                    map[i][j + 2] = '0';
+                    map[i][j + 3] = '0';
+                    map[i][j + 4] = '0';
+                    map[i][j + 5] = '0';
+                    map[i][j + 6] = '0';
+                    j += 6;
+                    count += 70;
+                }
+                // 六连
+                if (j < map[i].length - 5 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
+                        && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4] && map[i][j] == map[i][j + 5]) {
+                    map[i][j] = '0';
+                    map[i][j + 1] = '0';
+                    map[i][j + 2] = '0';
+                    map[i][j + 3] = '0';
+                    map[i][j + 4] = '0';
+                    map[i][j + 5] = '0';
+                    j += 5;
+                    count += 60;
+                }
+                // 五连
+                if (j < map[i].length - 4 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
+                        && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4]) {
+                    map[i][j] = '0';
+                    map[i][j + 1] = '0';
+                    map[i][j + 2] = '0';
+                    map[i][j + 3] = '0';
+                    map[i][j + 4] = '0';
+                    j += 4;
+                    count += 50;
+                }
+                // 四连
+                if (j < map[i].length - 3 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
+                        && map[i][j] == map[i][j + 3]) {
+                    map[i][j] = '0';
+                    map[i][j + 1] = '0';
+                    map[i][j + 2] = '0';
+                    map[i][j + 3] = '0';
+                    j += 3;
+                    count += 40;
+                }
+                // 三连
+                if (j < map[i].length - 2 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]) {
+                    map[i][j] = '0';
+                    map[i][j + 1] = '0';
+                    map[i][j + 2] = '0';
+                    j += 2;
+                    count += 30;
+                }
             }
         }
-        //
-        int arr1[][] = new int[arr.length][arr.length];
-        boolean flag = false;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                //列 aaaaa
-                if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2] && arr[i][j] == arr[i][j + 3] && arr[i][j] == arr[i][j + 4]) {
-                    arr1[i][j] = 9;
-                    arr1[i][j + 1] = 9;
-                    arr1[i][j + 2] = 9;
-                    arr1[i][j + 3] = 9;
-                    arr1[i][j + 4] = 9;
-                    flag = true;
+
+        // 列消除
+        for (int i = 0; i < map1[0].length; i++) {
+            for (int j = 0; j < map1.length; j++) {
+                // 八连
+                if (j < map1.length - 7 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
+                        && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i] && map1[j][i] == map1[j + 5][i]
+                        && map1[j][i] == map1[j + 6][i] && map1[j][i] == map1[j + 7][i]) {
+                    map1[j][i] = '0';
+                    map1[j + 1][i] = '0';
+                    map1[j + 2][i] = '0';
+                    map1[j + 3][i] = '0';
+                    map1[j + 4][i] = '0';
+                    map1[j + 5][i] = '0';
+                    map1[j + 6][i] = '0';
+                    map1[j + 7][i] = '0';
+                    j += 7;
+                    count += 80;
                 }
-                //列 aaaa
-                if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2] && arr[i][j] == arr[i][j + 3]) {
-                    arr1[i][j] = 9;
-                    arr1[i][j + 1] = 9;
-                    arr1[i][j + 2] = 9;
-                    arr1[i][j + 3] = 9;
-                    flag = true;
+                // 七连
+                if (j < map1.length - 6 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
+                        && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i] && map1[j][i] == map1[j + 5][i]
+                        && map1[j][i] == map1[j + 6][i]) {
+                    map1[j][i] = '0';
+                    map1[j + 1][i] = '0';
+                    map1[j + 2][i] = '0';
+                    map1[j + 3][i] = '0';
+                    map1[j + 4][i] = '0';
+                    map1[j + 5][i] = '0';
+                    map1[j + 6][i] = '0';
+                    j += 6;
+                    count += 70;
                 }
-                //列 aaa
-                if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2]) {
-                    arr1[i][j] = 9;
-                    arr1[i][j + 1] = 9;
-                    arr1[i][j + 2] = 9;
-                    flag = true;
+                // 六连
+                if (j < map1.length - 5 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
+                        && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i] && map1[j][i] == map1[j + 5][i]) {
+                    map1[j][i] = '0';
+                    map1[j + 1][i] = '0';
+                    map1[j + 2][i] = '0';
+                    map1[j + 3][i] = '0';
+                    map1[j + 4][i] = '0';
+                    map1[j + 5][i] = '0';
+                    j += 5;
+                    count += 60;
                 }
-                //行 aaaaa
-                if (arr2[i][j] == arr2[i][j + 1] && arr2[i][j] == arr2[i][j + 2] && arr2[i][j] == arr2[i][j + 3] && arr2[i][j] == arr2[i][j + 4]) {
-                    arr1[i][j] = 9;
-                    arr1[i][j + 1] = 9;
-                    arr1[i][j + 2] = 9;
-                    arr1[i][j + 3] = 9;
-                    arr1[i][j + 4] = 9;
-                    flag = true;
+                // 五连
+                if (j < map1.length - 4 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
+                        && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i]) {
+                    map1[j][i] = '0';
+                    map1[j + 1][i] = '0';
+                    map1[j + 2][i] = '0';
+                    map1[j + 3][i] = '0';
+                    map1[j + 4][i] = '0';
+                    j += 4;
+                    count += 50;
                 }
-                //行 aaaa
-                if (arr2[i][j] == arr2[i][j + 1] && arr2[i][j] == arr2[i][j + 2] && arr2[i][j] == arr2[i][j + 3]) {
-                    arr1[i][j] = 9;
-                    arr1[i][j + 1] = 9;
-                    arr1[i][j + 2] = 9;
-                    arr1[i][j + 3] = 9;
-                    flag = true;
+                // 四连
+                if (j < map1.length - 3 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
+                        && map1[j][i] == map1[j + 3][i]) {
+                    map1[j][i] = '0';
+                    map1[j + 1][i] = '0';
+                    map1[j + 2][i] = '0';
+                    map1[j + 3][i] = '0';
+                    j += 3;
                 }
-                //行 aaa
-                if (arr2[i][j] == arr2[i][j + 1] && arr2[i][j] == arr2[i][j + 2]) {
-                    arr1[i][j] = 9;
-                    arr1[i][j + 1] = 9;
-                    arr1[i][j + 2] = 9;
-                    flag = true;
-                } else flag = false;
+                // 三连
+                if (j < map1.length - 2 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]) {
+                    map1[j][i] = '0';
+                    map1[j + 1][i] = '0';
+                    map1[j + 2][i] = '0';
+                    j += 2;
+                }
+
             }
         }
-        return flag;
+        // 整合
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                map[i][j] = (map[i][j] == '0' || map1[i][j] == '0') ? '0' : map[i][j];
+            }
+        }
+        return count;
     }
 
     //打墙+赋值
     public static int[][] printWall(int[][] map) {
         int[][] bigMap = new int[16][16];//打墙
-        int index[] = new int[100];//
+        int[] index = new int[100];//
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 bigMap[i][j] = 5;//外围打上两层墙
@@ -160,10 +253,8 @@ public class eliminate {
                 bigMap[i][j] = 7;//外围打上两层墙
             }
         }
-        for (int i = 3; i < 13; i++) {
-            for (int j = 3; j < 13; j++) {
-                bigMap[i][j] = map[i - 3][j - 3];
-            }
+        for (int i = 3; i < 11; i++) {
+            System.arraycopy(map[i - 3], 0, bigMap[i], 3, 7);
         }
         return bigMap;
     }

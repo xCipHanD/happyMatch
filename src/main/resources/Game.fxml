@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.GameController.GameController">
+<AnchorPane onKeyPressed="#setOnKeyPressed" prefHeight="613.0" prefWidth="490.0" style="-fx-background: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="asia.sustech.happymatch.GameController.GameController">
     <children>
-        <ImageView id="background" fx:id="bg" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="background" fx:id="bg" fitHeight="762.0" fitWidth="504.0" focusTraversable="true" layoutY="-1.0" onMouseDragged="#setOnMouseDrag" onMousePressed="#setOnMousePressed" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@Game/bg1.png" />
             </image>
@@ -627,5 +628,64 @@
                 </GridPane>
             </children>
         </VBox>
+      <Button fx:id="swapBtn" layoutX="302.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#swapBtnReleased" text="swap" />
+      <Button fx:id="nextStepBtn" layoutX="363.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#nextStepBtnReleased" text="nextStep" />
+      <ImageView fx:id="swapImg1" fitHeight="46.0" fitWidth="47.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@Game/blocks/ice.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="swapImg2" fitHeight="46.0" fitWidth="47.0" layoutX="56.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@Game/blocks/ice.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="levelText" layoutX="185.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="关卡 : %s">
+         <font>
+            <Font name="Microsoft YaHei" size="32.0" />
+         </font>
+         <fill>
+            <LinearGradient endX="0.6619047619047619" endY="1.0">
+               <stops>
+                  <Stop color="#e3efff" />
+                  <Stop color="#e3efff" offset="0.00749063670411985" />
+                  <Stop color="#50eeff" offset="0.3354140657511446" />
+                  <Stop color="#52ffbf" offset="0.6559225210910605" />
+                  <Stop color="#b2ff00" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Text>
+      <Text fx:id="stepsText" fill="#c3ff2b" layoutX="325.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="剩余步数 : %s">
+         <font>
+            <Font name="Microsoft YaHei" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="scoreText" fill="#c3ff2b" layoutX="58.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="分数 : %s / %s">
+         <font>
+            <Font name="Microsoft YaHei" size="18.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="prop1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="prop2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="tipsBtn" layoutX="234.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#swapBtnReleased" text="tips" />
+      <ToggleButton fx:id="autoModeBtn" layoutX="147.0" layoutY="547.0" mnemonicParsing="false" text="autoMode" />
+      <Text fill="WHITE" layoutX="147.0" layoutY="599.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
+      <ImageView fx:id="back" fitHeight="51.0" fitWidth="39.0" layoutX="24.0" layoutY="24.0" onMouseReleased="#setBack" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@back.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bgmBt" fitHeight="41.0" fitWidth="35.0" layoutX="441.0" layoutY="26.0" onMousePressed="#bgmBtPressed" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@Login/v_on.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

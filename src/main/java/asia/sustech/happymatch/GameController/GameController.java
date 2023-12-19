@@ -1,41 +1,409 @@
 package asia.sustech.happymatch.GameController;
 
+import asia.sustech.happymatch.Utils.SoundsPlayer;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameController {
+    private double oldStageX;
+    private double oldStageY;
+    private double oldScreenX;
+    private double oldScreenY;
+
+    @FXML
+    private Button swapBtn;
+
+    @FXML
+    private Text stepsText;
 
     @FXML
     private ImageView bg;
 
     @FXML
+    private Button nextStepBtn;
+
+    @FXML
+    private ImageView back;
+
+    @FXML
     private VBox chessboard;
 
     @FXML
-    private ImageView cb;
+    private ImageView bgmBt;
+
+    @FXML
+    private ImageView prop2;
+
+    @FXML
+    private ImageView prop1;
+
+    @FXML
+    private Text levelText;
+
+    @FXML
+    private Text scoreText;
+
+    @FXML
+    private Button tipsBtn;
+
+    @FXML
+    private ImageView swapImg2;
+
+    @FXML
+    private ToggleButton autoModeBtn;
 
     @FXML
     private GridPane board;
 
+    @FXML
+    private ImageView swapImg1;
+
+    @FXML
+    private ImageView cb;
+    //选中的方块
+    private int selectedBlockX1 = -1;
+    private int selectedBlockY1 = -1;
+    private int selectedBlockX2 = -1;
+    private int selectedBlockY2 = -1;
+
     //初始化
     @FXML
     void initialize() {
-        //弹出成功提示框
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("提示");
-        alert.setHeaderText("成功");
-        alert.setContentText(Map.mapId + "");
-        alert.showAndWait();
+//        //弹出成功提示框
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle("提示");
+//        alert.setHeaderText("成功");
+//        alert.setContentText(Map.mapId + "");
+//        alert.showAndWait();
+        //初始化文字
+        if (Map.mapId != 0) {
+            levelText.setText("第" + Map.mapId + "关");
+        } else {
+            levelText.setText("自定义关卡");
+        }
+        scoreText.setText(String.format("分数 : %s/%s", Map.currentScore, Map.targetScore));
+        stepsText.setText(String.format("剩余 %s 步", Map.maxStep - Map.currentStep));
+        //绑定点击事件
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                getPaneByGridPaneCoordinates(board, i, j).setOnMouseReleased(this::blockBtnReleased);
+            }
+        }
+        //生成地图
+        MapController.createMap(Map.mapData, Map.blockCount);
+        //打印地图
+        for (int i = 0; i < Map.mapData.length; i++) {
+            for (int j = 0; j < Map.mapData.length; j++) {
+                System.out.printf(Map.mapData[i][j] + " ");
+            }
+            System.out.println();
+        }
         //渲染地图
         System.out.println(Arrays.deepToString(Map.mapData));
         Render(Map.mapData);
+    }
+
+    private void blockBtnReleased(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick2();
+
+        //获取点击的方块的坐标
+        int row = GridPane.getRowIndex((Node) event.getSource()) == null ? 0 :
+                GridPane.getRowIndex((Node) event.getSource());
+        int col = GridPane.getColumnIndex((Node) event.getSource()) == null ? 0 :
+                GridPane.getColumnIndex((Node) event.getSource());
+        //选择的逻辑,如果二者不在一起，就取消前者的选择
+        if (Map.mapData[row][col] != -1 && Map.mapData[row][col] != 0) {
+            if (selectedBlockX1 == -1 && selectedBlockY1 == -1) {
+                selectedBlockX1 = row;
+                selectedBlockY1 = col;
+                changeBlockState(row, col);
+            } else if (selectedBlockX2 == -1 && selectedBlockY2 == -1 && (Math.abs(selectedBlockX1 - row) + Math.abs(selectedBlockY1 - col) == 1)) {
+                selectedBlockX2 = row;
+                selectedBlockY2 = col;
+                changeBlockState(row, col);
+            } else {
+                changeBlockState(selectedBlockX1, selectedBlockY1);
+                changeBlockState(selectedBlockX2, selectedBlockY2);
+                selectedBlockX1 = row;
+                selectedBlockY1 = col;
+                selectedBlockX2 = -1;
+                selectedBlockY2 = -1;
+                changeBlockState(row, col);
+            }
+        }
+        //渲染地图
+        Render(Map.mapData);
+    }
+
+    //切换方块状态
+    private void changeBlockState(int row, int col) {
+        if (row == -1 || col == -1) {return;}
+        if (Map.mapData[row][col] != 0 && Map.mapData[row][col] != -1) {
+            if (Map.mapData[row][col] < 10) {
+                Map.mapData[row][col] += 10;
+            } else {
+                Map.mapData[row][col] -= 10;
+            }
+        }
+    }
+
+    //交换按钮按下
+    @FXML
+    void swapBtnReleased(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //如果有下一步，则提示用户点击下一步按钮
+        if (MapController.hasNextStep(Map.mapData)) {
+            //提示
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("提示");
+            alert.setHeaderText("请点击下一步按钮");
+            alert.showAndWait();
+            return;
+        }
+        //如果没有选中两个方块，就不执行
+        if (selectedBlockX1 == -1 || selectedBlockY1 == -1 || selectedBlockX2 == -1 || selectedBlockY2 == -1) {
+            //提示
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("提示");
+            alert.setHeaderText("请选择两个方块");
+            alert.showAndWait();
+            return;
+        }
+        //重置位置和图片
+        swapImg1.setLayoutX(0);
+        swapImg1.setLayoutY(0);
+        swapImg2.setLayoutX(0);
+        swapImg2.setLayoutY(0);
+        swapImg1.setImage(null);
+        swapImg2.setImage(null);
+        // 对选择进行排序
+        if (selectedBlockX1 > selectedBlockX2 || selectedBlockY1 > selectedBlockY2) {
+            int temp = selectedBlockX1;
+            selectedBlockX1 = selectedBlockX2;
+            selectedBlockX2 = temp;
+            temp = selectedBlockY1;
+            selectedBlockY1 = selectedBlockY2;
+            selectedBlockY2 = temp;
+        }
+        //存入临时变量
+        int temp1 = Map.mapData[selectedBlockX1][selectedBlockY1];
+        int temp2 = Map.mapData[selectedBlockX2][selectedBlockY2];
+        // 取消选择
+        changeBlockState(selectedBlockX1, selectedBlockY1);
+        changeBlockState(selectedBlockX2, selectedBlockY2);
+        // 渲染地图
+        Render(Map.mapData);
+        // 复制ImageView控件
+        swapImg1.setImage(getImageViewByGridPaneCoordinates(board, selectedBlockX1, selectedBlockY1).getImage());
+        swapImg2.setImage(getImageViewByGridPaneCoordinates(board, selectedBlockX2, selectedBlockY2).getImage());
+        ImageView imageView1 = getImageViewByGridPaneCoordinates(board, selectedBlockX1, selectedBlockY1);
+        ImageView imageView2 = getImageViewByGridPaneCoordinates(board, selectedBlockX2, selectedBlockY2);
+        // 清空原有ImageView控件
+        Map.mapData[selectedBlockX1][selectedBlockY1] = 0;
+        Map.mapData[selectedBlockX2][selectedBlockY2] = 0;
+        //渲染地图
+        Render(Map.mapData);
+        //设置可视
+        swapImg1.setVisible(true);
+        swapImg2.setVisible(true);
+        // 创建TranslateTransition动画，设置持续时间和目标位置
+        TranslateTransition transition1 = new TranslateTransition(Duration.millis(400), swapImg1);
+        transition1.setFromX(getRelativeBoundsToWindow(imageView1).getMinX());
+        transition1.setFromY(getRelativeBoundsToWindow(imageView1).getMinY());
+        transition1.setToX(getRelativeBoundsToWindow(imageView2).getMinX());
+        transition1.setToY(getRelativeBoundsToWindow(imageView2).getMinY());
+        transition1.setInterpolator(Interpolator.EASE_BOTH);
+
+        TranslateTransition transition2 = new TranslateTransition(Duration.millis(400), swapImg2);
+        transition2.setFromX(getRelativeBoundsToWindow(imageView2).getMinX());
+        transition2.setFromY(getRelativeBoundsToWindow(imageView2).getMinY());
+        transition2.setToX(getRelativeBoundsToWindow(imageView1).getMinX());
+        transition2.setToY(getRelativeBoundsToWindow(imageView1).getMinY());
+        transition2.setInterpolator(Interpolator.EASE_BOTH);
+        // 锁定按钮
+        swapBtn.setDisable(true);
+        // 播放动画
+        transition1.play();
+        transition2.play();
+        // 创建计数器，用于跟踪完成的动画数量
+        AtomicInteger animationCount = new AtomicInteger();
+        // 设置动画完成时的回调函数
+        transition1.setOnFinished(e -> {
+            animationCount.getAndIncrement();
+        });
+        transition2.setOnFinished(e -> {
+            animationCount.getAndIncrement();
+            //动画结束判断
+            if (animationCount.get() == 2) {
+                //交换方块
+                Map.mapData[selectedBlockX1][selectedBlockY1] = temp2;
+                Map.mapData[selectedBlockX2][selectedBlockY2] = temp1;
+                //渲染交换后的地图
+                Render(Map.mapData);
+                //如果没有可以消除的方块，就交换回来
+                if (MapController.calcCountsAfterMatches(Map.mapData) == 0) {
+                    //重置位置和图片
+                    swapImg1.setLayoutX(0);
+                    swapImg1.setLayoutY(0);
+                    swapImg2.setLayoutX(0);
+                    swapImg2.setLayoutY(0);
+                    swapImg1.setImage(null);
+                    swapImg2.setImage(null);
+                    // 对选择进行排序
+                    if (selectedBlockX1 > selectedBlockX2 || selectedBlockY1 > selectedBlockY2) {
+                        int temp = selectedBlockX1;
+                        selectedBlockX1 = selectedBlockX2;
+                        selectedBlockX2 = temp;
+                        temp = selectedBlockY1;
+                        selectedBlockY1 = selectedBlockY2;
+                        selectedBlockY2 = temp;
+                    }
+                    //存入临时变量
+                    int temp3 = Map.mapData[selectedBlockX1][selectedBlockY1];
+                    int temp4 = Map.mapData[selectedBlockX2][selectedBlockY2];
+                    // 取消选择
+                    changeBlockState(selectedBlockX1, selectedBlockY1);
+                    changeBlockState(selectedBlockX2, selectedBlockY2);
+                    // 渲染地图
+                    Render(Map.mapData);
+                    // 复制ImageView控件
+                    swapImg1.setImage(getImageViewByGridPaneCoordinates(board, selectedBlockX1, selectedBlockY1).getImage());
+                    swapImg2.setImage(getImageViewByGridPaneCoordinates(board, selectedBlockX2, selectedBlockY2).getImage());
+                    ImageView imageView3 = getImageViewByGridPaneCoordinates(board, selectedBlockX1, selectedBlockY1);
+                    ImageView imageView4 = getImageViewByGridPaneCoordinates(board, selectedBlockX2, selectedBlockY2);
+                    // 清空原有ImageView控件
+                    Map.mapData[selectedBlockX1][selectedBlockY1] = 0;
+                    Map.mapData[selectedBlockX2][selectedBlockY2] = 0;
+                    //渲染地图
+                    Render(Map.mapData);
+                    //设置可视
+                    swapImg1.setVisible(true);
+                    swapImg2.setVisible(true);
+                    // 创建TranslateTransition动画，设置持续时间和目标位置
+                    TranslateTransition transition3 = new TranslateTransition(Duration.millis(400), swapImg1);
+                    transition3.setFromX(getRelativeBoundsToWindow(imageView3).getMinX());
+                    transition3.setFromY(getRelativeBoundsToWindow(imageView3).getMinY());
+                    transition3.setToX(getRelativeBoundsToWindow(imageView4).getMinX());
+                    transition3.setToY(getRelativeBoundsToWindow(imageView4).getMinY());
+                    transition3.setInterpolator(Interpolator.EASE_BOTH);
+
+                    TranslateTransition transition4 = new TranslateTransition(Duration.millis(400), swapImg2);
+                    transition4.setFromX(getRelativeBoundsToWindow(imageView4).getMinX());
+                    transition4.setFromY(getRelativeBoundsToWindow(imageView4).getMinY());
+                    transition4.setToX(getRelativeBoundsToWindow(imageView3).getMinX());
+                    transition4.setToY(getRelativeBoundsToWindow(imageView3).getMinY());
+                    transition4.setInterpolator(Interpolator.EASE_BOTH);
+                    // 锁定按钮
+                    swapBtn.setDisable(true);
+                    // 播放动画
+                    transition3.play();
+                    transition4.play();
+                    // 创建计数器，用于跟踪完成的动画数量
+                    AtomicInteger animationCount1 = new AtomicInteger();
+                    // 设置动画完成时的回调函数
+                    transition3.setOnFinished(ev -> {
+                        animationCount1.getAndIncrement();
+                    });
+                    transition4.setOnFinished(ev -> {
+                        animationCount1.getAndIncrement();
+                        //动画结束判断
+                        if (animationCount1.get() == 2) {
+                            //交换方块
+                            Map.mapData[selectedBlockX1][selectedBlockY1] = temp4;
+                            Map.mapData[selectedBlockX2][selectedBlockY2] = temp3;
+                            //渲染交换后的地图
+                            Render(Map.mapData);
+                            //重置选择
+                            selectedBlockX1 = -1;
+                            selectedBlockY1 = -1;
+                            selectedBlockX2 = -1;
+                            selectedBlockY2 = -1;
+                            //重置位置和图片
+                            swapImg1.setLayoutX(0);
+                            swapImg1.setLayoutY(0);
+                            swapImg2.setLayoutX(0);
+                            swapImg2.setLayoutY(0);
+                            swapImg1.setImage(null);
+                            swapImg2.setImage(null);
+                            //设置不可视
+                            swapImg1.setVisible(false);
+                            swapImg2.setVisible(false);
+                            //解锁按钮
+                            swapBtn.setDisable(false);
+                            System.out.println("完成");
+//                            //打印地图
+//                            for (int i = 0; i < Map.mapData.length; i++) {
+//                                for (int j = 0; j < Map.mapData.length; j++) {
+//                                    System.out.printf(Map.mapData[i][j] + " ");
+//                                }
+//                                System.out.println();
+//                            }
+                        }
+                    });
+                } else {
+                    //计算分数和步数
+                    int scoreToBeAdded = MapController.calcCountsAfterMatches(Map.mapData);
+                    Map.currentScore += scoreToBeAdded;
+                    Map.currentStep++;
+                    //更新文字
+                    scoreText.setText(String.valueOf(Map.currentScore));
+                    stepsText.setText(String.valueOf(Map.maxStep - Map.currentStep));
+                    //播放音效
+                    SoundsPlayer.playSound_match();
+                    //消除方块
+                    MapController.getEliminatedMap(Map.mapData);
+                    //渲染地图
+                    Render(Map.mapData);
+                    //重置选择
+                    selectedBlockX1 = -1;
+                    selectedBlockY1 = -1;
+                    selectedBlockX2 = -1;
+                    selectedBlockY2 = -1;
+                    //重置位置和图片
+                    swapImg1.setLayoutX(0);
+                    swapImg1.setLayoutY(0);
+                    swapImg2.setLayoutX(0);
+                    swapImg2.setLayoutY(0);
+                    swapImg1.setImage(null);
+                    swapImg2.setImage(null);
+                    //设置不可视
+                    swapImg1.setVisible(false);
+                    swapImg2.setVisible(false);
+                    //解锁按钮
+                    swapBtn.setDisable(false);
+                    System.out.println("完成");
+                }
+            }
+        });
+    }
+
+    public static Bounds getRelativeBoundsToWindow(Node node) {
+        Bounds nodeBounds = node.getBoundsInLocal();
+        double relativeX = node.localToScene(nodeBounds.getMinX(), nodeBounds.getMinY()).getX();
+        double relativeY = node.localToScene(nodeBounds.getMinX(), nodeBounds.getMinY()).getY();
+        double relativeWidth = nodeBounds.getWidth();
+        double relativeHeight = nodeBounds.getHeight();
+        return new BoundingBox(relativeX, relativeY, relativeWidth, relativeHeight);
     }
 
     void Render(int[][] map) {
@@ -127,5 +495,67 @@ public class GameController {
         }
 
         return result;
+    }
+
+    //esc退出
+    @FXML
+    void setOnKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ESCAPE) {
+            //询问是否退出
+            String info = "是否退出？";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES)
+                    , new ButtonType("取消", ButtonBar.ButtonData.NO));
+            alert.setHeaderText(null);
+            alert.setTitle("提示");
+            alert.showAndWait();
+            if (alert.getResult().getButtonData().equals(ButtonBar.ButtonData.YES))
+                System.exit(0);
+        }
+    }
+
+    //拖动窗口
+    @FXML
+    void setOnMousePressed(MouseEvent event) {
+        try {
+            Stage primaryStage = (Stage) board.getScene().getWindow();
+
+            oldStageX = primaryStage.getX();
+            oldStageY = primaryStage.getY();
+            oldScreenX = event.getScreenX();
+            oldScreenY = event.getScreenY();
+        } catch (Exception e) {
+            //do nothing
+        }
+    }
+
+    //拖动窗口
+    @FXML
+    void setOnMouseDrag(MouseEvent event) {
+        Stage primaryStage = (Stage) board.getScene().getWindow();
+        primaryStage.setX(event.getScreenX() - oldScreenX + oldStageX);
+        primaryStage.setY(event.getScreenY() - oldScreenY + oldStageY);
+    }
+
+    @FXML
+    public void bgmBtPressed(MouseEvent event) {}
+
+    @FXML
+    public void setBack(MouseEvent back) {
+    }
+
+    @FXML
+    public void nextStepBtnReleased(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //初始化检查，是否已经完成游戏
+        if (Map.currentScore >= Map.targetScore) {
+            //提示
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("提示");
+            alert.setHeaderText("恭喜你完成了本关");
+            alert.showAndWait();
+            return;
+        }
+
     }
 }
