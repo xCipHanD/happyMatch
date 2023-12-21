@@ -253,5 +253,24 @@ public class HttpRequests {
             throw new RuntimeException(e);
         }
     }
-    
+
+    public static HttpResult saveMap(String token, String map) {
+        try {
+            String result = HttpRequest.sendPostRequest(API.MAP_SAVE_PROCESS.toString(),
+                    String.format("{\"token\":\"%s\",\"map\":\"%s\"}", token, map));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

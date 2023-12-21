@@ -270,8 +270,6 @@ public class LoginController {
 
     @FXML
     void particleTest(MouseEvent event) {
-        ExplosionEffect explosionEffect = new ExplosionEffect();
-        explosionEffect.explode((javafx.scene.layout.AnchorPane) login_bt.getParent(),
-                event.getSceneX(), event.getSceneY());
+        
     }
 }

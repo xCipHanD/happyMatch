@@ -1,5 +1,9 @@
 package asia.sustech.happymatch.GameController;
 
+import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.User;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
@@ -207,15 +211,6 @@ public class MapController {
 
             }
         }
-//        //列消除输出
-//        System.out.println("-----------");
-//        for (int i = 0; i < map1.length; i++) {
-//            for (int j = 0; j < map1.length; j++) {
-//                System.out.printf("%d ", map1[i][j]);
-//            }
-//            System.out.println();
-//        }
-        System.out.println("-----------");
         // 整合
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
@@ -484,5 +479,36 @@ public class MapController {
         } else {
             return null;
         }
+    }
+
+    public static void shuffle(int[][] mapData) {
+        //先将除了-1的方块改为0
+        for (int i = 0; i < mapData.length; i++) {
+            for (int j = 0; j < mapData.length; j++) {
+                if (mapData[i][j] != -1) {
+                    mapData[i][j] = 0;
+                }
+            }
+        }
+        //再生成地图
+        MapController.createMap(mapData, Map.blockCount);
+    }
+
+    public static boolean saveMap(int[][] mapData, int mapId) {
+        String info =
+                mapId + " " + Map.blockCount + " " + Map.currentStep + " " + Map.maxStep + " " + Map.currentScore +
+                        " " + Map.targetScore + " " + Map.swapMapItemUsedCount + "\\n";
+        //将地图数据转换为字符串
+        StringBuilder sb = new StringBuilder();
+        sb.append(info);
+        for (int[] ints : mapData) {
+            for (int anInt : ints) {
+                sb.append(anInt).append(" ");
+            }
+            sb.append("\\n");
+        }
+        //将地图数据上传到服务器
+        HttpResult result = HttpRequests.saveMap(User.getToken(), sb.toString());
+        return result.getCode() == 200;
     }
 }

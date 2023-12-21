@@ -7,9 +7,12 @@ import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,12 +20,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -47,9 +54,6 @@ public class GameController {
 
     @FXML
     private ImageView back;
-
-    @FXML
-    private VBox chessboard;
 
     @FXML
     private ImageView bgmBt;
@@ -81,8 +85,7 @@ public class GameController {
     @FXML
     private ImageView swapImg1;
 
-    @FXML
-    private ImageView cb;
+    private boolean canPropBeUsed = true;
     //选中的方块
     private int selectedBlockX1 = -1;
     private int selectedBlockY1 = -1;
@@ -136,15 +139,23 @@ public class GameController {
                 getPaneByGridPaneCoordinates(board, i, j).setOnMouseReleased(this::blockBtnReleased);
             }
         }
+        //渲染道具
+        prop1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/items/item1.png"))));
+        prop2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/items/item2.png"))));
+        //道具绑定tooltip
+        Tooltip tooltip = new Tooltip("小木槌:消除一类方块");
+        Tooltip.install(prop1, tooltip);
+        Tooltip tooltip1 = new Tooltip("空间扭曲器:打乱所有方块");
+        Tooltip.install(prop2, tooltip1);
         //生成地图
         MapController.createMap(Map.mapData, Map.blockCount);
         //打印地图
-        for (int i = 0; i < Map.mapData.length; i++) {
-            for (int j = 0; j < Map.mapData.length; j++) {
-                System.out.printf(Map.mapData[i][j] + " ");
-            }
-            System.out.println();
-        }
+//        for (int i = 0; i < Map.mapData.length; i++) {
+//            for (int j = 0; j < Map.mapData.length; j++) {
+//                System.out.printf(Map.mapData[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
         //渲染地图
         System.out.println(Arrays.deepToString(Map.mapData));
         Render(Map.mapData);
@@ -225,6 +236,7 @@ public class GameController {
 //            return;
             swapBtn.setDisable(true);
             tipsBtn.setDisable(true);
+            canPropBeUsed = false;
             nextStepBtn.setDisable(false);
         }
         //如果没有选中两个方块，就不执行
@@ -290,15 +302,14 @@ public class GameController {
         // 锁定按钮
         swapBtn.setDisable(true);
         tipsBtn.setDisable(true);
+        canPropBeUsed = false;
         // 播放动画
         transition1.play();
         transition2.play();
         // 创建计数器，用于跟踪完成的动画数量
         AtomicInteger animationCount = new AtomicInteger();
         // 设置动画完成时的回调函数
-        transition1.setOnFinished(e -> {
-            animationCount.getAndIncrement();
-        });
+        transition1.setOnFinished(e -> animationCount.getAndIncrement());
         transition2.setOnFinished(e -> {
             animationCount.getAndIncrement();
             //动画结束判断
@@ -364,15 +375,14 @@ public class GameController {
                     // 锁定按钮
                     swapBtn.setDisable(true);
                     tipsBtn.setDisable(true);
+                    canPropBeUsed = false;
                     // 播放动画
                     transition3.play();
                     transition4.play();
                     // 创建计数器，用于跟踪完成的动画数量
                     AtomicInteger animationCount1 = new AtomicInteger();
                     // 设置动画完成时的回调函数
-                    transition3.setOnFinished(ev -> {
-                        animationCount1.getAndIncrement();
-                    });
+                    transition3.setOnFinished(ev -> animationCount1.getAndIncrement());
                     transition4.setOnFinished(ev -> {
                         animationCount1.getAndIncrement();
                         //动画结束判断
@@ -400,6 +410,7 @@ public class GameController {
                             //解锁按钮
                             swapBtn.setDisable(false);
                             tipsBtn.setDisable(false);
+                            canPropBeUsed = true;
                             System.out.println("完成");
 //                            //打印地图
 //                            for (int i = 0; i < Map.mapData.length; i++) {
@@ -482,13 +493,13 @@ public class GameController {
 
     void Render(int[][] map) {
         //打印地图
-        System.out.println("渲染后的地图");
-        for (int i = 0; i < Map.mapData.length; i++) {
-            for (int j = 0; j < Map.mapData.length; j++) {
-                System.out.printf(Map.mapData[i][j] + " ");
-            }
-            System.out.println();
-        }
+//        System.out.println("渲染后的地图");
+//        for (int i = 0; i < Map.mapData.length; i++) {
+//            for (int j = 0; j < Map.mapData.length; j++) {
+//                System.out.printf(Map.mapData[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
         for (int i = 0; i < Map.row; i++) {
             for (int j = 0; j < Map.col; j++) {
                 ImageView imageView = getImageViewByGridPaneCoordinates(board, i, j);
@@ -623,6 +634,50 @@ public class GameController {
 
     @FXML
     public void setBack() {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        //判断游戏是否结束
+        if (Map.win == 0) {
+            //询问是否保存地图
+            String info = "游戏未完成，是否保存地图？";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("保存", ButtonBar.ButtonData.YES)
+                    , new ButtonType("不用了", ButtonBar.ButtonData.NO));
+            alert.setHeaderText(null);
+            alert.setTitle("提示");
+            alert.showAndWait();
+            if (alert.getResult().getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                //保存地图
+                boolean flag = MapController.saveMap(Map.mapData, Map.mapId);
+                if (flag) {
+                    //提示
+                    Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                    alert1.setTitle("提示");
+                    alert1.setHeaderText("保存成功");
+                    alert1.showAndWait();
+                } else {
+                    //提示
+                    Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                    alert1.setTitle("提示");
+                    alert1.setHeaderText("保存失败");
+                    alert1.showAndWait();
+                }
+            }
+            //返回hall
+            Stage primaryStage = (Stage) back.getScene().getWindow();
+            //加载fxml文件
+            URL url = getClass().getResource("/Hall.fxml");
+            //加载完fxml文件后，获取其中的root
+            Parent root;
+            try {
+                root = FXMLLoader.load(Objects.requireNonNull(url));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            //设置场景
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            primaryStage.setScene(scene);
+        }
     }
 
     @FXML
@@ -698,10 +753,12 @@ public class GameController {
             nextStepBtn.setDisable(false);
             swapBtn.setDisable(true);
             tipsBtn.setDisable(true);
+            canPropBeUsed = false;
         } else {
             nextStepBtn.setDisable(true);
             swapBtn.setDisable(false);
             tipsBtn.setDisable(false);
+            canPropBeUsed = true;
         }
         //判断是否完成
         if (Map.currentScore >= Map.targetScore) {
@@ -719,6 +776,7 @@ public class GameController {
                 nextStepBtn.setDisable(true);
                 swapBtn.setDisable(true);
                 tipsBtn.setDisable(true);
+                canPropBeUsed = false;
                 //提示
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("提示");
@@ -766,6 +824,96 @@ public class GameController {
             ExplosionEffect.playParticleEffect(board, selectedBlockX2, selectedBlockY2);
             //渲染地图
             Render(Map.mapData);
+        }
+    }
+
+    @FXML
+    void prop1BtnReleased(MouseEvent event) {
+        if (canPropBeUsed) {
+            //提示选择一个方块
+            if (!(selectedBlockX1 != -1 && selectedBlockY1 != -1 && selectedBlockX2 == -1 && selectedBlockY2 == -1)) {
+                //提示
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("提示");
+                alert.setHeaderText("请选择一个方块");
+                alert.showAndWait();
+                return;
+            }
+            //提示道具信息并询问是否使用
+            String info = "道具：小木槌。作用：消除一类方块。是否使用道具？";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES)
+                    , new ButtonType("取消", ButtonBar.ButtonData.NO));
+            alert.setHeaderText(null);
+            alert.setTitle("提示");
+            alert.showAndWait();
+            if (alert.getResult().getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                //播放音效
+                SoundsPlayer.playSound_match();
+                //取消选择
+                changeBlockState(selectedBlockX1, selectedBlockY1);
+                //标记选择
+                int delMark = Map.mapData[selectedBlockX1][selectedBlockY1];
+                //重置选择
+                selectedBlockX1 = -1;
+                selectedBlockY1 = -1;
+                //等待0.5s
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //消除方块
+                for (int i = 0; i < Map.mapData.length; i++) {
+                    for (int j = 0; j < Map.mapData[0].length; j++) {
+                        if (Map.mapData[i][j] == delMark) {
+                            Map.mapData[i][j] = 0;
+                            //添加分数
+                            Map.currentScore += 10;
+                            //分数文字
+                            updateText();
+                            //播放特效
+                            ExplosionEffect.playParticleEffect(board, i, j);
+                        }
+                    }
+                }
+                //禁止按钮
+                canPropBeUsed = false;
+                nextStepBtn.setDisable(false);
+                swapBtn.setDisable(true);
+                tipsBtn.setDisable(true);
+                //渲染地图
+                Render(Map.mapData);
+            }
+        }
+    }
+
+    @FXML
+    void prop2BtnReleased(MouseEvent event) {
+        if (canPropBeUsed && Map.swapMapItemUsedCount < 3) {
+            //提示道具信息并询问是否使用
+            String info = "道具：空间扭曲器。作用：打乱所有方块。是否使用道具？(剩余次数:" + (3 - Map.swapMapItemUsedCount) + ")";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES)
+                    , new ButtonType("取消", ButtonBar.ButtonData.NO));
+            alert.setHeaderText(null);
+            alert.setTitle("提示");
+            alert.showAndWait();
+
+            if (alert.getResult().getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                //播放音效
+                SoundsPlayer.playSound_btnClick();
+                //打乱地图
+                MapController.shuffle(Map.mapData);
+                //渲染地图
+                Render(Map.mapData);
+                //道具使用次数+1
+                Map.swapMapItemUsedCount++;
+            }
+        } else if (Map.swapMapItemUsedCount >= 3) {
+            //提示
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("提示");
+            alert.setHeaderText("道具使用次数已达上限");
+            alert.showAndWait();
         }
     }
 }

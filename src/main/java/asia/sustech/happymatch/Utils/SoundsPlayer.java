@@ -44,11 +44,6 @@ public class SoundsPlayer {
 
     public static void playSound_fall() {play("/Sounds/fall.wav");}
 
-
-    public void playSound3() {
-        play("path/to/your/sound3.wav");
-    }
-
     private static void play(String audioFilePath) {
         Thread thread = new Thread(() -> {
             File audioFile =

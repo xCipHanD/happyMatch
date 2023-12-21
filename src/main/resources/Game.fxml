@@ -672,8 +672,6 @@
             <Font name="Microsoft YaHei" size="18.0" />
          </font>
       </Text>
-      <ImageView fx:id="prop1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="prop2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="tipsBtn" layoutX="252.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#tipsBtnReleased" text="tips">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -702,5 +700,29 @@
             <Image url="@Game/v_on.png" />
          </image>
       </ImageView>
+      <HBox fx:id="prop" layoutX="37.0" layoutY="535.0" prefHeight="47.0" prefWidth="111.0">
+         <children>
+            <Pane prefHeight="47.0" prefWidth="110.0">
+               <children>
+                  <ImageView fx:id="prop2" fitHeight="47.0" fitWidth="46.0" layoutX="59.0" layoutY="1.0" onMouseReleased="#prop2BtnReleased" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Game/items/item2.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="prop1" fitHeight="42.0" fitWidth="39.0" layoutY="5.0" onMouseReleased="#prop1BtnReleased" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Game/items/item1.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
     </children>
 </AnchorPane>
