@@ -628,8 +628,14 @@
                 </GridPane>
             </children>
         </VBox>
-      <Button fx:id="swapBtn" layoutX="302.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#swapBtnReleased" text="swap" />
-      <Button fx:id="nextStepBtn" layoutX="363.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#nextStepBtnReleased" text="nextStep" />
+      <Button fx:id="swapBtn" layoutX="302.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#swapBtnReleased" text="swap">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="nextStepBtn" layoutX="363.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#nextStepBtnReleased" text="nextStep">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <ImageView fx:id="swapImg1" fitHeight="46.0" fitWidth="47.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@Game/blocks/ice.png" />
@@ -668,8 +674,17 @@
       </Text>
       <ImageView fx:id="prop1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="prop2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="tipsBtn" layoutX="234.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#swapBtnReleased" text="tips" />
-      <ToggleButton fx:id="autoModeBtn" layoutX="147.0" layoutY="547.0" mnemonicParsing="false" text="autoMode" />
+      <Button fx:id="tipsBtn" layoutX="252.0" layoutY="547.0" mnemonicParsing="false" onMouseReleased="#tipsBtnReleased" text="tips">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <ToggleButton fx:id="autoModeBtn" layoutX="381.0" layoutY="516.0" mnemonicParsing="false" onMouseReleased="#autoModeBtnReleased" text="自动 关">
+         <font>
+            <Font size="10.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ToggleButton>
       <Text fill="WHITE" layoutX="147.0" layoutY="599.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS109 Project By Xciphand &amp; TonyMo0310" textAlignment="CENTER" />
       <ImageView fx:id="back" fitHeight="51.0" fitWidth="39.0" layoutX="24.0" layoutY="24.0" onMouseReleased="#setBack" pickOnBounds="true" preserveRatio="true">
          <cursor>
@@ -684,7 +699,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
          <image>
-            <Image url="@Login/v_on.png" />
+            <Image url="@Game/v_on.png" />
          </image>
       </ImageView>
     </children>

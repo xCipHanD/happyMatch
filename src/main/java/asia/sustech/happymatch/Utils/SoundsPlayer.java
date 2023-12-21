@@ -42,6 +42,8 @@ public class SoundsPlayer {
 
     public static void playSound_Win() {play("/Sounds/win.wav");}
 
+    public static void playSound_fall() {play("/Sounds/fall.wav");}
+
 
     public void playSound3() {
         play("path/to/your/sound3.wav");

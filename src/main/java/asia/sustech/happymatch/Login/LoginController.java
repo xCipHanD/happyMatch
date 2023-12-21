@@ -1,5 +1,6 @@
 package asia.sustech.happymatch.Login;
 
+import asia.sustech.happymatch.Particles.ExplosionEffect;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
@@ -265,5 +266,12 @@ public class LoginController {
             bgmBt.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Login/v_off.png"))));
             BGMPlayer.getInstance().setMute(true);
         }
+    }
+
+    @FXML
+    void particleTest(MouseEvent event) {
+        ExplosionEffect explosionEffect = new ExplosionEffect();
+        explosionEffect.explode((javafx.scene.layout.AnchorPane) login_bt.getParent(),
+                event.getSceneX(), event.getSceneY());
     }
 }
