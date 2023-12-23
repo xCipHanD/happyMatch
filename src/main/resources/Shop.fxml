@@ -100,10 +100,13 @@
                   </Pane>
                   <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                      <children>
-                        <ImageView fx:id="buyBt" fitHeight="43.0" fitWidth="62.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="buyBt" fitHeight="43.0" fitWidth="62.0" layoutX="15.0" layoutY="15.0" onMouseReleased="#buyBtnReleased" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@Shop/buy.png" />
-                           </image></ImageView>
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></ImageView>
                      </children>
                   </Pane>
                </children>

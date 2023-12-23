@@ -492,14 +492,6 @@ public class GameController {
     }
 
     void Render(int[][] map) {
-        //打印地图
-//        System.out.println("渲染后的地图");
-//        for (int i = 0; i < Map.mapData.length; i++) {
-//            for (int j = 0; j < Map.mapData.length; j++) {
-//                System.out.printf(Map.mapData[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
         for (int i = 0; i < Map.row; i++) {
             for (int j = 0; j < Map.col; j++) {
                 ImageView imageView = getImageViewByGridPaneCoordinates(board, i, j);
@@ -571,7 +563,7 @@ public class GameController {
         return imageView;
     }
 
-    private static Pane getPaneByGridPaneCoordinates(GridPane gridPane, int row, int col) {
+    public static Pane getPaneByGridPaneCoordinates(GridPane gridPane, int row, int col) {
         Pane result = null;
 
         // 遍历GridPane中的所有节点

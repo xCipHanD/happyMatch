@@ -1,6 +1,5 @@
 package asia.sustech.happymatch.Login;
 
-import asia.sustech.happymatch.Particles.ExplosionEffect;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
@@ -19,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -270,6 +270,5 @@ public class LoginController {
 
     @FXML
     void particleTest(MouseEvent event) {
-        
     }
 }

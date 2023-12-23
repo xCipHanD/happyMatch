@@ -92,4 +92,37 @@ public class Map {
         mapObject = new Map();
         return mapObject;
     }
+
+    //加载已有地图
+    public static Map parseMap(String map) {
+        Scanner sc = new Scanner(map);
+        //解析地图数据
+        Map.mapId = sc.nextInt();
+        Map.blockCount = sc.nextInt();
+        Map.currentStep = sc.nextInt();
+        Map.maxStep = sc.nextInt();
+        Map.currentScore = sc.nextInt();
+        Map.targetScore = sc.nextInt();
+        Map.swapMapItemUsedCount = sc.nextInt();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Map.mapData[i][j] = sc.nextInt();
+            }
+        }
+        mapObject = new Map();
+        return mapObject;
+    }
+
+    public static void clearMap() {
+        mapData = new int[row][col];
+        swapMapItemUsedCount = 0;
+        targetScore = 0;
+        currentScore = 0;
+        blockCount = 0;
+        currentStep = 0;
+        maxStep = 0;
+        mapId = 0;
+        mapObject = null;
+        win = 0;
+    }
 }

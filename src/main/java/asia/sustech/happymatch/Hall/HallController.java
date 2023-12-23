@@ -123,8 +123,6 @@ public class HallController {
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
-
-
     }
 
     //签到按钮
@@ -159,9 +157,20 @@ public class HallController {
 
     //自定义地图按钮
     @FXML
-    void diyMapBtPressed(MouseEvent event) {
+    void diyMapBtPressed(MouseEvent event) throws IOException {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
+        //跳转页面
+        Stage primaryStage = (Stage) coinsText.getScene().getWindow();
+        //加载fxml文件
+        URL url = getClass().getResource("/DiyMap.fxml");
+        //加载完fxml文件后，获取其中的root
+        Parent root = FXMLLoader.load(Objects.requireNonNull(url));
+        //设置场景
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(scene);
+
     }
 
     //修改头像按钮
@@ -294,6 +303,12 @@ public class HallController {
         }
     }
 
+    //退出按钮
+    @FXML
+    void onExistBtnPressed() {
+        setOnKeyPressed(new KeyEvent(null, null, null, null, null, KeyCode.ESCAPE, false, false, false, false));
+    }
+
     //拖动窗口
     @FXML
     void setOnMousePressed(MouseEvent event) {
@@ -334,22 +349,42 @@ public class HallController {
             alert.showAndWait();
             return;
         }
+        //清空地图
+        Map.clearMap();
         //获取地图信息
-        Map map = Map.getMap(Integer.parseInt(levelText.getText()));
-        if (map == null) {
-            //提示框
-            String info = "获取地图失败！";
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
-                    ButtonBar.ButtonData.YES));
-            alert.setHeaderText(null);
-            alert.setTitle("提示");
-            alert.showAndWait();
-            return;
+        JSONObject mapInfo = result.getData();
+        int saved_Level = mapInfo.getInteger("level");
+        String saved_Map = mapInfo.getString("map");
+        if (saved_Map.isEmpty()) {
+            //获取对应地图
+            Map.getMap(Integer.parseInt(levelText.getText()));
+            System.out.println("关卡:" + Map.mapId + ",无进度");
+            goToGamePage();
         } else {
-            System.out.println("关卡:" + Map.mapId);
+            System.out.println("关卡:" + saved_Level + ",有进度");
+            if (saved_Level == Integer.parseInt(levelText.getText())) {
+                //提示框
+                String info = "是否继续上次游戏？";
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                        ButtonBar.ButtonData.YES), new ButtonType("取消", ButtonBar.ButtonData.NO));
+                alert.setHeaderText(null);
+                alert.setTitle("提示");
+                alert.showAndWait();
+                //如果是，加载进度
+                if (alert.getResult().getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                    //获取对应地图
+                    System.out.println(saved_Map);
+                    Map.parseMap(saved_Map);
+                    System.out.println("关卡:" + Map.mapId + ",有进度");
+                    goToGamePage();
+                    return;
+                }
+            }
+            //否则，重新开始
+            Map.getMap(Integer.parseInt(levelText.getText()));
+            System.out.println("关卡:" + Map.mapId + ",无进度");
+            goToGamePage();
         }
-//        Platform.runLater(Properties::initProperties);
-        goToGamePage();
     }
 
     //左调关卡按钮

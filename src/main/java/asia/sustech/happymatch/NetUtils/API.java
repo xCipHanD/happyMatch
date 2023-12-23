@@ -11,9 +11,9 @@ public enum API {
             return url;
         return url + switch (this) {
             case MAP_GET_PROCESS -> "/map/getProcess?token=%s";
-            case MAP_SAVE_PROCESS -> "/map/saveDiy";
+            case MAP_SAVE_PROCESS -> "/map/saveProcess";
             case MAP_GET -> "/map/get?token=%s&mapId=%s";
-            case DIY_MAP_SAVE -> "/map/saveProcess";
+            case DIY_MAP_SAVE -> "/map/saveDiy";
             case LOGIN -> "/user/login?user=%s&pwd=%s";
             case REGISTER -> "/user/register?user=%s&pwd=%s&email=%s";
             case FORGET_PWD -> "/user/changePWD?email=%s&newPWD=%s&code=%s";

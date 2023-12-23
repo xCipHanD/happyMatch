@@ -13,7 +13,7 @@ import java.util.Random;
 public class MapController {
     private static final int rol = 8;//8*8的地图
     private static final int col = 8;//8*8的地图
-
+    
     public static void createMap(int[][] map, int blockCount) {
         do {
             for (int i = 0; i < rol; i++) {
@@ -509,6 +509,7 @@ public class MapController {
         }
         //将地图数据上传到服务器
         HttpResult result = HttpRequests.saveMap(User.getToken(), sb.toString());
+        System.out.println(result.getMessage());
         return result.getCode() == 200;
     }
 }

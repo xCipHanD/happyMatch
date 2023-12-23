@@ -348,5 +348,31 @@
                 <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             </rowConstraints>
         </GridPane>
+      <Pane layoutX="429.0" layoutY="471.0" prefHeight="50.0" prefWidth="53.0" style="-fx-background-color: rgba(255,255,255,0.7); -fx-background-radius: 40;">
+         <children>
+            <ImageView fitHeight="33.0" fitWidth="35.0" layoutX="10.0" layoutY="9.0" onMousePressed="#onExistBtnPressed" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <image>
+                  <Image url="@Hall/exit.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Text fontSmoothingType="LCD" layoutX="429.0" layoutY="537.0" strokeType="OUTSIDE" strokeWidth="0.0" text="退出" textAlignment="CENTER" wrappingWidth="52.626953125">
+         <fill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#8e00ff" />
+                  <Stop color="#8e00ff" offset="0.00749063670411985" />
+                  <Stop color="#ab21ff" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </fill>
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
     </children>
 </AnchorPane>

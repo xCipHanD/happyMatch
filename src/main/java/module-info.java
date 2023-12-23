@@ -18,4 +18,6 @@ module asia.sustech.happymatch {
     opens asia.sustech.happymatch.Ending to javafx.fxml;
     exports asia.sustech.happymatch.Utils;
     opens asia.sustech.happymatch.Utils to javafx.fxml;
+    exports asia.sustech.happymatch.DIYMap;
+    opens asia.sustech.happymatch.DIYMap to javafx.fxml;
 }

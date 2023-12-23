@@ -74,6 +74,23 @@ public class ShopController {
         name1.setText(data.getJSONObject("1").getString("name"));
         desp1.setText(data.getJSONObject("1").getString("description"));
         costText.setText("花费 : " + data.getJSONObject("1").getString("price"));
+        //设置coins
+        coinsText.setText(String.valueOf(User.getCoins()));
+        //获取背包
+        String property = HttpRequests.getProperty(User.getToken()).getData().toString();
+        JSONObject data1 = JSONObject.parseObject(property);
+        int count1 = data1.getInteger("count") == null ? 0 : data1.getInteger("count");
+        //设置process
+        processText.setText("已拥有 : " + count1);
+    }
+
+    //购买1
+    @FXML
+    void buyBtnReleased() {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        // 购买
+        JSONObject data = HttpRequests.buyItem(User.getToken(), 1).getData();
     }
 
     //esc退出
