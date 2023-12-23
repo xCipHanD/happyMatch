@@ -31,6 +31,8 @@ public class Map {
     public static int mapId = 0;
     public static Map mapObject = null;
 
+    public static int win = 0;
+
     private Map() {
 
     }

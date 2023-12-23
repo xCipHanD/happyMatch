@@ -1,6 +1,13 @@
 package asia.sustech.happymatch.GameController;
 
+import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.User;
+
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 public class MapController {
@@ -16,12 +23,24 @@ public class MapController {
                     }
                 }
             }
-            MapController.getEliminatedMap(map);
+            MapController.getEliminatedMap(map, 0);
         } while (MapController.calcCountsAfterMatches(map) != 0 || Arrays.deepToString(map).contains("0"));
     }
 
+    //填补空白
+    public static void fillEmpty(int[][] map, int blockCount) {
+        for (int i = 0; i < rol; i++) {
+            for (int j = 0; j < col; j++) {
+                if (map[i][j] == 0) {
+                    map[i][j] = new Random().nextInt(1, blockCount + 1);
+                }
+            }
+        }
+    }
+
     //获得消除后的地图
-    public static void getEliminatedMap(int[][] map) {
+    // 此处的p为被消除标记，用于特效播放,此值不能与正常方块id重合
+    public static void getEliminatedMap(int[][] map, int p) {
         //map预处理
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map.length; j++) {
@@ -43,14 +62,14 @@ public class MapController {
                 if (j < map[i].length - 7 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
                         && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4] && map[i][j] == map[i][j + 5]
                         && map[i][j] == map[i][j + 6] && map[i][j] == map[i][j + 7]) {
-                    map[i][j] = 0;
-                    map[i][j + 1] = 0;
-                    map[i][j + 2] = 0;
-                    map[i][j + 3] = 0;
-                    map[i][j + 4] = 0;
-                    map[i][j + 5] = 0;
-                    map[i][j + 6] = 0;
-                    map[i][j + 7] = 0;
+                    map[i][j] = p;
+                    map[i][j + 1] = p;
+                    map[i][j + 2] = p;
+                    map[i][j + 3] = p;
+                    map[i][j + 4] = p;
+                    map[i][j + 5] = p;
+                    map[i][j + 6] = p;
+                    map[i][j + 7] = p;
                     j += 7;
                     continue;
                 }
@@ -58,13 +77,13 @@ public class MapController {
                 if (j < map[i].length - 6 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
                         && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4] && map[i][j] == map[i][j + 5]
                         && map[i][j] == map[i][j + 6]) {
-                    map[i][j] = 0;
-                    map[i][j + 1] = 0;
-                    map[i][j + 2] = 0;
-                    map[i][j + 3] = 0;
-                    map[i][j + 4] = 0;
-                    map[i][j + 5] = 0;
-                    map[i][j + 6] = 0;
+                    map[i][j] = p;
+                    map[i][j + 1] = p;
+                    map[i][j + 2] = p;
+                    map[i][j + 3] = p;
+                    map[i][j + 4] = p;
+                    map[i][j + 5] = p;
+                    map[i][j + 6] = p;
                     j += 6;
                     continue;
                 }
@@ -72,41 +91,41 @@ public class MapController {
                 if (j < map[i].length - 5 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
                         && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4]
                         && map[i][j] == map[i][j + 5]) {
-                    map[i][j] = 0;
-                    map[i][j + 1] = 0;
-                    map[i][j + 2] = 0;
-                    map[i][j + 3] = 0;
-                    map[i][j + 4] = 0;
-                    map[i][j + 5] = 0;
+                    map[i][j] = p;
+                    map[i][j + 1] = p;
+                    map[i][j + 2] = p;
+                    map[i][j + 3] = p;
+                    map[i][j + 4] = p;
+                    map[i][j + 5] = p;
                     j += 5;
                     continue;
                 }
                 // 五连
                 if (j < map[i].length - 4 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
                         && map[i][j] == map[i][j + 3] && map[i][j] == map[i][j + 4]) {
-                    map[i][j] = 0;
-                    map[i][j + 1] = 0;
-                    map[i][j + 2] = 0;
-                    map[i][j + 3] = 0;
-                    map[i][j + 4] = 0;
+                    map[i][j] = p;
+                    map[i][j + 1] = p;
+                    map[i][j + 2] = p;
+                    map[i][j + 3] = p;
+                    map[i][j + 4] = p;
                     j += 4;
                     continue;
                 }
                 // 四连
                 if (j < map[i].length - 3 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]
                         && map[i][j] == map[i][j + 3]) {
-                    map[i][j] = 0;
-                    map[i][j + 1] = 0;
-                    map[i][j + 2] = 0;
-                    map[i][j + 3] = 0;
+                    map[i][j] = p;
+                    map[i][j + 1] = p;
+                    map[i][j + 2] = p;
+                    map[i][j + 3] = p;
                     j += 3;
                     continue;
                 }
                 // 三连
                 if (j < map[i].length - 2 && map[i][j] == map[i][j + 1] && map[i][j] == map[i][j + 2]) {
-                    map[i][j] = 0;
-                    map[i][j + 1] = 0;
-                    map[i][j + 2] = 0;
+                    map[i][j] = p;
+                    map[i][j + 1] = p;
+                    map[i][j + 2] = p;
                     j += 2;
                     continue;
                 }
@@ -116,21 +135,21 @@ public class MapController {
         for (int i = 0; i < map1[0].length; i++) {
             for (int j = 0; j < map1.length; j++) {
                 // 为 0 或 -1
-                if (map[j][i] == 0 || map[j][i] == -1) {
+                if (map1[j][i] == 0 || map1[j][i] == -1) {
                     continue;
                 }
                 // 八连
                 if (j < map1.length - 7 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
                         && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i] && map1[j][i] == map1[j + 5][i]
                         && map1[j][i] == map1[j + 6][i] && map1[j][i] == map1[j + 7][i]) {
-                    map1[j][i] = 0;
-                    map1[j + 1][i] = 0;
-                    map1[j + 2][i] = 0;
-                    map1[j + 3][i] = 0;
-                    map1[j + 4][i] = 0;
-                    map1[j + 5][i] = 0;
-                    map1[j + 6][i] = 0;
-                    map1[j + 7][i] = 0;
+                    map1[j][i] = p;
+                    map1[j + 1][i] = p;
+                    map1[j + 2][i] = p;
+                    map1[j + 3][i] = p;
+                    map1[j + 4][i] = p;
+                    map1[j + 5][i] = p;
+                    map1[j + 6][i] = p;
+                    map1[j + 7][i] = p;
                     j += 7;
                     continue;
                 }
@@ -138,54 +157,54 @@ public class MapController {
                 if (j < map1.length - 6 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
                         && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i] && map1[j][i] == map1[j + 5][i]
                         && map1[j][i] == map1[j + 6][i]) {
-                    map1[j][i] = 0;
-                    map1[j + 1][i] = 0;
-                    map1[j + 2][i] = 0;
-                    map1[j + 3][i] = 0;
-                    map1[j + 4][i] = 0;
-                    map1[j + 5][i] = 0;
-                    map1[j + 6][i] = 0;
+                    map1[j][i] = p;
+                    map1[j + 1][i] = p;
+                    map1[j + 2][i] = p;
+                    map1[j + 3][i] = p;
+                    map1[j + 4][i] = p;
+                    map1[j + 5][i] = p;
+                    map1[j + 6][i] = p;
                     j += 6;
                     continue;
                 }
                 // 六连
                 if (j < map1.length - 5 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
                         && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i] && map1[j][i] == map1[j + 5][i]) {
-                    map1[j][i] = 0;
-                    map1[j + 1][i] = 0;
-                    map1[j + 2][i] = 0;
-                    map1[j + 3][i] = 0;
-                    map1[j + 4][i] = 0;
-                    map1[j + 5][i] = 0;
+                    map1[j][i] = p;
+                    map1[j + 1][i] = p;
+                    map1[j + 2][i] = p;
+                    map1[j + 3][i] = p;
+                    map1[j + 4][i] = p;
+                    map1[j + 5][i] = p;
                     j += 5;
                     continue;
                 }
                 // 五连
                 if (j < map1.length - 4 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
                         && map1[j][i] == map1[j + 3][i] && map1[j][i] == map1[j + 4][i]) {
-                    map1[j][i] = 0;
-                    map1[j + 1][i] = 0;
-                    map1[j + 2][i] = 0;
-                    map1[j + 3][i] = 0;
-                    map1[j + 4][i] = 0;
+                    map1[j][i] = p;
+                    map1[j + 1][i] = p;
+                    map1[j + 2][i] = p;
+                    map1[j + 3][i] = p;
+                    map1[j + 4][i] = p;
                     j += 4;
                     continue;
                 }
                 // 四连
                 if (j < map1.length - 3 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]
                         && map1[j][i] == map1[j + 3][i]) {
-                    map1[j][i] = 0;
-                    map1[j + 1][i] = 0;
-                    map1[j + 2][i] = 0;
-                    map1[j + 3][i] = 0;
+                    map1[j][i] = p;
+                    map1[j + 1][i] = p;
+                    map1[j + 2][i] = p;
+                    map1[j + 3][i] = p;
                     j += 3;
                     continue;
                 }
                 // 三连
                 if (j < map1.length - 2 && map1[j][i] == map1[j + 1][i] && map1[j][i] == map1[j + 2][i]) {
-                    map1[j][i] = 0;
-                    map1[j + 1][i] = 0;
-                    map1[j + 2][i] = 0;
+                    map1[j][i] = p;
+                    map1[j + 1][i] = p;
+                    map1[j + 2][i] = p;
                     j += 2;
                     continue;
                 }
@@ -195,7 +214,17 @@ public class MapController {
         // 整合
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                map[i][j] = (map[i][j] == 0 || map1[i][j] == 0) ? 0 : map[i][j];
+                map[i][j] = (map[i][j] == p || map1[i][j] == p) ? p : map[i][j];
+            }
+        }
+    }
+
+    public static void delParticleMark(int[][] map, int p) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
+                if (map[i][j] == p) {
+                    map[i][j] = 0;
+                }
             }
         }
     }
@@ -333,51 +362,153 @@ public class MapController {
                 }
             }
         }
+        // 3. 是否有可消除的
+        if (MapController.calcCountsAfterMatches(map) != 0) {
+            return true;
+        }
 
         return false;
     }
 
-    //掉落算法
-    public static int[][] dropArray(int[][] map) {
-        int rows = map.length;
-        int cols = map[0].length;
+    //存在空白
+    public static boolean hasEmpty(int[][] map) {
+        for (int[] ints : map) {
+            for (int anInt : ints) {
+                if (anInt == 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-        for (int j = 0; j < cols; j++) {
-            int dropIndex = -1; // 记录要下落到的位置
+    //存在可掉落的方块
+    public static boolean hasFloatingBlocks(int[][] map) {
+        int width = map[0].length;
+        int height = map.length;
 
-            for (int i = rows - 1; i >= 0; i--) {
-                if (map[i][j] != 9 || map[i][j] != -1) {
-                    if (dropIndex != -1) {
-                        map[dropIndex][j] = map[i][j]; // 下落到dropIndex位置
-                        map[i][j] = 9; // 当前位置置0
-                        dropIndex--; // dropIndex向上移动
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if ((map[j][i] != 0 && map[j][i] != -1) && (j + 1 < height && map[j + 1][i] == 0)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    //下落算法
+    public static int[][] fall(int[][] map) {
+        int width = map[0].length;
+        int height = map.length;
+
+        for (int x = 0; x < width; x++) {
+            int emptyY = -1;
+            for (int y = height - 1; y >= 0; y--) {
+                if (map[y][x] == 0) {
+                    if (emptyY == -1) {
+                        emptyY = y;
                     }
-                } else if (dropIndex == -1) {
-                    dropIndex = i; // 记录第一个遇到的0的位置
+                } else if (map[y][x] != -1) {
+                    if (emptyY != -1) {
+                        map[emptyY][x] = map[y][x];
+                        map[y][x] = 0;
+                        emptyY--;
+                    }
+                } else if (map[y][x] == -1) {
+                    emptyY = -1;
                 }
             }
         }
         return map;
     }
 
-    //存在可掉落的方块
-    public static boolean hasDrop(int[][] map) {
-        int rows = map.length;
-        int cols = map[0].length;
+    //提示算法
+    public static int[][] getTips(int[][] map) {
+        //克隆一个map，防止内存污染
+        int[][] map1 = new int[map.length][map.length];
+        for (int i = 0; i < map.length; i++) {
+            System.arraycopy(map[i], 0, map1[i], 0, map.length);
+        }
+        //map预处理
+        for (int i = 0; i < map1.length; i++) {
+            for (int j = 0; j < map1.length; j++) {
+                map1[i][j] = (map1[i][j] < 10) ? map1[i][j] : map1[i][j] - 10;
+            }
+        }
 
-        for (int j = 0; j < cols; j++) {
-            int dropIndex = -1; // 记录要下落到的位置
+        int width = map1[0].length;
+        int height = map1.length;
+        int[][] directions = {{0, 1}, {1, 0}}; // 只检查右边和下边的方块
 
-            for (int i = rows - 1; i >= 0; i--) {
-                if (map[i][j] != 0 || map[i][j] != -1) {
-                    if (dropIndex != -1) {
-                        return true;
+        int maxScore = 0;
+        int[][] maxScoreSwap = null;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                for (int[] direction : directions) {
+                    int newX = x + direction[0];
+                    int newY = y + direction[1];
+                    if (newX >= 0 && newX < width && newY >= 0 && newY < height && map1[y][x] != -1 && map1[newY][newX] != -1) {
+                        int temp = map1[y][x];
+                        map1[y][x] = map1[newY][newX];
+                        map1[newY][newX] = temp;
+
+                        if (calcCountsAfterMatches(map1) != 0) {
+                            int score = calcCountsAfterMatches(map1);
+                            if (score > maxScore) {
+                                maxScore = score;
+                                maxScoreSwap = new int[][]{{y, x}, {newY, newX}};
+                            }
+                        }
+                        temp = map1[y][x];
+                        map1[y][x] = map1[newY][newX];
+                        map1[newY][newX] = temp;
                     }
-                } else if (dropIndex == -1) {
-                    dropIndex = i; // 记录第一个遇到的0的位置
                 }
             }
         }
-        return false;
+        if (maxScoreSwap != null) {
+            int[][] tips = new int[2][2];
+            tips[0][0] = maxScoreSwap[0][0];
+            tips[0][1] = maxScoreSwap[0][1];
+            tips[1][0] = maxScoreSwap[1][0];
+            tips[1][1] = maxScoreSwap[1][1];
+            return tips;
+        } else {
+            return null;
+        }
+    }
+
+    public static void shuffle(int[][] mapData) {
+        //先将除了-1的方块改为0
+        for (int i = 0; i < mapData.length; i++) {
+            for (int j = 0; j < mapData.length; j++) {
+                if (mapData[i][j] != -1) {
+                    mapData[i][j] = 0;
+                }
+            }
+        }
+        //再生成地图
+        MapController.createMap(mapData, Map.blockCount);
+    }
+
+    public static boolean saveMap(int[][] mapData, int mapId) {
+        String info =
+                mapId + " " + Map.blockCount + " " + Map.currentStep + " " + Map.maxStep + " " + Map.currentScore +
+                        " " + Map.targetScore + " " + Map.swapMapItemUsedCount + "\\n";
+        //将地图数据转换为字符串
+        StringBuilder sb = new StringBuilder();
+        sb.append(info);
+        for (int[] ints : mapData) {
+            for (int anInt : ints) {
+                sb.append(anInt).append(" ");
+            }
+            sb.append("\\n");
+        }
+        //将地图数据上传到服务器
+        HttpResult result = HttpRequests.saveMap(User.getToken(), sb.toString());
+        return result.getCode() == 200;
     }
 }

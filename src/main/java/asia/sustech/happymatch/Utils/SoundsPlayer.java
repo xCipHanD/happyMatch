@@ -42,10 +42,7 @@ public class SoundsPlayer {
 
     public static void playSound_Win() {play("/Sounds/win.wav");}
 
-
-    public void playSound3() {
-        play("path/to/your/sound3.wav");
-    }
+    public static void playSound_fall() {play("/Sounds/fall.wav");}
 
     private static void play(String audioFilePath) {
         Thread thread = new Thread(() -> {

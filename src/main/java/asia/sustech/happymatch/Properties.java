@@ -21,7 +21,7 @@ public class Properties {
         properties = newProperties;
     }
 
-    public void initProperties() {
+    public static void initProperties() {
         //从服务器获取用户的道具信息
         try {
             //获取所有道具

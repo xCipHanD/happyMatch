@@ -1,6 +1,7 @@
 package asia.sustech.happymatch.Hall;
 
 import asia.sustech.happymatch.GameController.Map;
+import asia.sustech.happymatch.Properties;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
@@ -321,6 +322,18 @@ public class HallController {
     void onStartBtnReleased(MouseEvent event) {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
+        //获取进度信息
+        HttpResult result = HttpRequests.getProcessMap(User.getToken());
+        if (result.getCode() != 200) {
+            //提示框
+            String info = "获取进度失败！";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                    ButtonBar.ButtonData.YES));
+            alert.setHeaderText(null);
+            alert.setTitle("提示");
+            alert.showAndWait();
+            return;
+        }
         //获取地图信息
         Map map = Map.getMap(Integer.parseInt(levelText.getText()));
         if (map == null) {
@@ -335,6 +348,7 @@ public class HallController {
         } else {
             System.out.println("关卡:" + Map.mapId);
         }
+//        Platform.runLater(Properties::initProperties);
         goToGamePage();
     }
 
