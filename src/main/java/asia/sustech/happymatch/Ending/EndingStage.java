@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+
+
 public class EndingStage extends Application {
 
     @Override
@@ -70,9 +72,9 @@ public class EndingStage extends Application {
         playAgainButton.setOnAction(event -> {
             // 关闭当前窗口
             primaryStage.close();
-            mediaPlayer.stop();
             // 初始化界面
             initGame();
+            mediaPlayer.stop();
         });
 
     }
@@ -95,11 +97,30 @@ public class EndingStage extends Application {
 
     //返回你写的主界面
     public void initGame() {
-        // 在这里实现初始化界面的逻辑
-        Stage stage = new Stage();
         // 创建并设置初始化界面的根布局、控件等
-        // ...
+        VBox root = new VBox();
+        root.setAlignment(Pos.CENTER);
+        root.setSpacing(20);
+
+        Label titleLabel = new Label("初始化界面");
+        titleLabel.setStyle("-fx-font-size: 24;");
+
+        Button startButton = new Button("开始游戏");
+        startButton.setStyle("-fx-font-size: 18;");
+        startButton.setOnAction(event -> {
+            HallController hallController=new HallController();
+            hallController.goToGamePage();
+        });
+
+        root.getChildren().addAll(titleLabel, startButton);
+
+        // 创建场景
+        Scene scene = new Scene(root, 800, 600);
+
+        // 创建新的主舞台
+        Stage stage = new Stage();
         stage.setTitle("初始化界面");
+        stage.setScene(scene);
         stage.show();
     }
     public static void main(String[] args) {
