@@ -22,7 +22,7 @@ public class GameResult extends Application {
         this.primaryStage = primaryStage; // 保存主舞台的引用
 
         // 加载背景图片
-        Image backgroundImage = new Image("file:///path/to/your/image.jpg");
+        Image backgroundImage = new Image("C:\\Users\\myx\\Desktop\\happyMatch\\src\\main\\resources\\Game\\end.jpg");
 
         // 创建背景图像对象
         BackgroundImage background = new BackgroundImage(
@@ -62,7 +62,7 @@ public class GameResult extends Application {
         primaryStage.show();
 
         // 播放音乐
-        String musicFile = "file:///path/to/your/music.mp3";
+        String musicFile = "C:\\Users\\myx\\Desktop\\happyMatch\\src\\main\\resources\\Sounds\\endMusic.mp3";
         Media sound = new Media(new File(musicFile).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
@@ -71,6 +71,7 @@ public class GameResult extends Application {
         playAgainButton.setOnAction(event -> {
             // 关闭当前窗口
             primaryStage.close();
+            mediaPlayer.stop();
             // 初始化界面
             initGame();
         });

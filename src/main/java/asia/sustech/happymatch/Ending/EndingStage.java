@@ -1,5 +1,6 @@
 package asia.sustech.happymatch.Ending;
 
+import asia.sustech.happymatch.Hall.HallController;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -69,6 +70,7 @@ public class EndingStage extends Application {
         playAgainButton.setOnAction(event -> {
             // 关闭当前窗口
             primaryStage.close();
+            mediaPlayer.stop();
             // 初始化界面
             initGame();
         });
