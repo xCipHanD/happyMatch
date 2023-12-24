@@ -7,6 +7,7 @@ import asia.sustech.happymatch.NetUtils.HttpResult;
 import asia.sustech.happymatch.User;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Map {
@@ -41,7 +42,11 @@ public class Map {
         //如果当前地图id和传入的地图id不一致，重新生成地图
         if (Map.mapId != id) {
             //从服务器获取地图数据
-            HttpResult result = HttpRequests.getMapByID(User.getToken(), id);
+            Optional<HttpResult> httpResult = HttpRequests.getMapByID(User.getToken(), id);
+            if (httpResult.isEmpty()) {
+                return null;
+            }
+            HttpResult result = httpResult.get();
             if (result.getCode() != 200) {
                 return null;
             }

@@ -18,7 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,6 +25,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 
 public class LoginController {
     private double oldStageX;
@@ -48,6 +48,12 @@ public class LoginController {
     private Button login_bt;
     @FXML
     private Text forget_pwd;
+
+    //初始化
+    @FXML
+    void initialize() {
+        userName.requestFocus();
+    }
 
     //清空文本
     @FXML
@@ -98,64 +104,75 @@ public class LoginController {
             Thread thread = new Thread(() -> {
                 //发起登录请求
                 Platform.runLater(() -> {
-                    HttpResult result = HttpRequests.login(username, password);
-                    String info = null;
-                    if (result.getCode() != 200) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION, result.getMessage(), new ButtonType("确定",
+                    Optional<HttpResult> result0 = HttpRequests.login(username, password);
+                    result0.ifPresentOrElse(result -> {
+                        if (result.getCode() != 200) {
+                            //登录失败提示框
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION, null, new ButtonType(
+                                    "确定", ButtonBar.ButtonData.YES));
+                            alert.setTitle("提示");
+                            alert.setHeaderText(result.getMessage());
+                            alert.showAndWait();
+                        } else {
+                            //登录成功
+                            //构建用户信息
+                            Optional<HttpResult> result1 = HttpRequests.getUserInfo(result.getToken());
+                            result1.ifPresent(httpResult -> {
+                                if (httpResult.getCode() == 200) {
+                                    try {
+                                        //保存用户信息成功
+                                        JSONObject userData = httpResult.getData();
+                                        String userName = userData.getString("username");
+                                        int uid = userData.getInteger("uid");
+                                        String email = userData.getString("email");
+                                        String avatarURL = userData.getString("avatarURL");
+                                        int level = userData.getInteger("level");
+                                        int exp = userData.getInteger("experience");
+                                        String token = result.getToken();
+                                        int coins = userData.getInteger("coins");
+                                        User.getUser(userName, uid, email, avatarURL, level, exp, token,
+                                                coins);
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "欢迎回来，" + userName + "！"
+                                                , new ButtonType("确定",
+                                                ButtonBar.ButtonData.YES));
+                                        alert.setHeaderText(null);
+                                        alert.setTitle("提示");
+                                        alert.showAndWait();
+                                    } catch (Exception ignored) {
+                                        //获取用户信息失败
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "获取用户信息失败",
+                                                new ButtonType("确定",
+                                                        ButtonBar.ButtonData.YES));
+                                        alert.setHeaderText(null);
+                                        alert.setTitle("提示");
+                                        alert.showAndWait();
+                                    }
+                                }
+                            });
+
+
+                            //跳转主页面
+                            Stage primaryStage = (Stage) login_bt.getScene().getWindow();
+                            //加载fxml文件
+                            URL url = getClass().getResource("/Hall.fxml");
+                            //加载完fxml文件后，获取其中的root
+                            Parent root = null;
+                            try {
+                                root = FXMLLoader.load(Objects.requireNonNull(url));
+                            } catch (IOException ignored) {
+                            }
+                            //设置场景
+                            Scene scene = new Scene(root);
+                            scene.setFill(Color.TRANSPARENT);
+                            primaryStage.setScene(scene);
+                        }
+                    }, () -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "网络错误", new ButtonType("确定",
                                 ButtonBar.ButtonData.YES));
                         alert.setHeaderText(null);
                         alert.setTitle("提示");
                         alert.showAndWait();
-                    } else {
-                        //构建用户信息
-                        HttpResult result1 = HttpRequests.getUserInfo(result.getToken());
-                        if (result1.getCode() == 200) {
-                            try {
-                                //保存用户信息成功
-                                JSONObject userData = result1.getData();
-                                String userName = userData.getString("username");
-                                int uid = userData.getInteger("uid");
-                                String email = userData.getString("email");
-                                String avatarURL = userData.getString("avatarURL");
-                                int level = userData.getInteger("level");
-                                int exp = userData.getInteger("experience");
-                                String token = result.getToken();
-                                int coins = userData.getInteger("coins");
-                                User user = User.getUser(userName, uid, email, avatarURL, level, exp, token, coins);
-                                info = "欢迎回来，" + userName + "！";
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
-                                        ButtonBar.ButtonData.YES));
-                                alert.setHeaderText(null);
-                                alert.setTitle("提示");
-                                alert.showAndWait();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                //获取用户信息失败
-                                info = "获取用户信息失败";
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
-                                        ButtonBar.ButtonData.YES));
-                                alert.setHeaderText(null);
-                                alert.setTitle("提示");
-                                alert.showAndWait();
-                            }
-                        }
-
-                        //跳转主页面
-                        Stage primaryStage = (Stage) login_bt.getScene().getWindow();
-                        //加载fxml文件
-                        URL url = getClass().getResource("/Hall.fxml");
-                        //加载完fxml文件后，获取其中的root
-                        Parent root = null;
-                        try {
-                            root = FXMLLoader.load(Objects.requireNonNull(url));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        //设置场景
-                        Scene scene = new Scene(root);
-                        scene.setFill(Color.TRANSPARENT);
-                        primaryStage.setScene(scene);
-                    }
+                    });
                 });
             });
 

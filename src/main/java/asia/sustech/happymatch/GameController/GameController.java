@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameController {
@@ -912,7 +913,14 @@ public class GameController {
                 //记录成功通关
                 if (Map.mapId == User.getLevel()) {
                     Platform.runLater(() -> {
-                        HttpResult result = HttpRequests.updateProcess(User.getToken(), User.getLevel());
+                        Optional<HttpResult> result = HttpRequests.updateProcess(User.getToken(), User.getLevel());
+                        if (result.isEmpty()) {
+                            //提示网络错误
+                            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                            alert1.setTitle("提示");
+                            alert1.setHeaderText("网络错误,无法上传游戏进度");
+                            alert1.showAndWait();
+                        }
                     });
                 }
             } else {

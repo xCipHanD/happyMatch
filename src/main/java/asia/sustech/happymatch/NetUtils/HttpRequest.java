@@ -10,6 +10,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 
 public class HttpRequest {
@@ -17,7 +18,7 @@ public class HttpRequest {
     // 忽略SSL证书验证
     static {
         try {
-            TrustManager[] trustAllCerts = new TrustManager[] {
+            TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                             return null;
@@ -32,8 +33,7 @@ public class HttpRequest {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 
@@ -87,7 +87,7 @@ public class HttpRequest {
 
             // 写入请求数据
             try (OutputStream os = connection.getOutputStream()) {
-                byte[] input = data.getBytes("utf-8");
+                byte[] input = data.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
@@ -110,15 +110,5 @@ public class HttpRequest {
         }
 
         return response.toString();
-    }
-
-    public static void main(String[] args) {
-        try {
-            // 例子：发送GET请求
-            String getResponse = sendGetRequest("https://api.sustech.online/weather");
-            System.out.println("GET Response: " + getResponse);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

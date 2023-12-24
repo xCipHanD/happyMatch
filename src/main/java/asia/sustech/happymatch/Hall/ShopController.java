@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ShopController {
     private double oldStageX;
@@ -72,18 +73,34 @@ public class ShopController {
     @FXML
     public void initialize() {
         //商店仅作功能展示，无需动态添加物品
-        JSONObject data = HttpRequests.getItemsList(User.getToken()).getData();
-        name1.setText(data.getJSONObject("1").getString("name"));
-        desp1.setText(data.getJSONObject("1").getString("description"));
-        costText.setText("花费 : " + data.getJSONObject("1").getString("price"));
-        //设置coins
-        coinsText.setText(String.valueOf(User.getCoins()));
-        //获取背包
-        String property = HttpRequests.getProperty(User.getToken()).getData().toString();
-        JSONObject data1 = JSONObject.parseObject(property);
-        int count1 = data1.getInteger("count") == null ? 0 : data1.getInteger("count");
-        //设置process
-        processText.setText("已拥有 : " + count1);
+        Optional<HttpResult> result = HttpRequests.getItemsList(User.getToken());
+        result.ifPresentOrElse(httpResult -> {
+            name1.setText(httpResult.getData().getJSONObject("1").getString("name"));
+            desp1.setText(httpResult.getData().getJSONObject("1").getString("description"));
+            costText.setText("花费 : " + httpResult.getData().getJSONObject("1").getString("price"));
+            //设置coins
+            coinsText.setText(String.valueOf(User.getCoins()));
+            //获取背包
+            Optional<HttpResult> result1 = HttpRequests.getProperty(User.getToken());
+            result1.ifPresentOrElse(httpResult1 -> {
+                JSONObject data = JSONObject.parseObject(httpResult1.getData().toString());
+                int count = data.getInteger("count") == null ? 0 : data.getInteger("count");
+                //设置process
+                processText.setText("已拥有 : " + count);
+            }, () -> {
+                //网络错误
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("网络错误");
+                alert.showAndWait();
+            });
+        }, () -> {
+            //网络错误
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("网络错误");
+            alert.showAndWait();
+        });
     }
 
     //购买1号物品（仅作功能展示）
@@ -92,24 +109,33 @@ public class ShopController {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         // 购买
-        HttpResult result = HttpRequests.buyItem(User.getToken(), 1);
-        //判断是否购买成功
-        if (result.getMessage().equals("成功")) {
-            //购买成功
-            //设置coins
-            User.setCoins(User.getCoins() - 10);
-            coinsText.setText(String.valueOf(User.getCoins()));
-            //设置process
-            processText.setText("已拥有 : " + JSONObject.parseObject(result.getData().getString("1")).getString("count"));
-        } else {
-            //购买失败
-            //提示
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("购买失败");
-            alert.setHeaderText(null);
-            alert.setContentText("金币不足");
+        Optional<HttpResult> result = HttpRequests.buyItem(User.getToken(), 1);
+        result.ifPresentOrElse(httpResult -> {
+            //判断是否购买成功
+            if (httpResult.getMessage().equals("成功")) {
+                //购买成功
+                //设置coins
+                User.setCoins(User.getCoins() - 10);
+                coinsText.setText(String.valueOf(User.getCoins()));
+                //设置process
+                processText.setText("已拥有 : " + JSONObject.parseObject(httpResult.getData().getString("1")).getString(
+                        "count"));
+            } else {
+                //购买失败
+                //提示
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("购买失败");
+                alert.setHeaderText(null);
+                alert.setContentText("金币不足");
+                alert.showAndWait();
+            }
+        }, () -> {
+            //网络错误
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("网络错误");
             alert.showAndWait();
-        }
+        });
     }
 
     //esc退出

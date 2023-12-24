@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 
 public class RegisterController {
     private double oldStageX;
@@ -36,7 +37,7 @@ public class RegisterController {
     private ImageView login_img;
 
     @FXML
-    private Button login_bt;
+    private Button register_bt;
 
     @FXML
     private TextField userName;
@@ -51,13 +52,18 @@ public class RegisterController {
     private TextField email;
 
     @FXML
-    void setLogin_bt_pressed(MouseEvent event) {
+    void registerBtnPressed(MouseEvent event) {
         //设置透明度
         login_img.setOpacity(0.7);
     }
 
     @FXML
-    void setLogin_bt_released(MouseEvent event) {
+    void initialize() {
+        userName.requestFocus();
+    }
+
+    @FXML
+    void registerBtnReleased(MouseEvent event) {
         SoundsPlayer.playSound_btnClick1();
         //设置透明度
         login_img.setOpacity(1);
@@ -91,15 +97,38 @@ public class RegisterController {
             return;
         }
         Thread thread = new Thread(() -> {
-            //发起登录请求
+            //发起注册请求
             Platform.runLater(() -> {
-                HttpResult result = HttpRequests.register(userName.getText(), passWord.getText(), email.getText());
-                String info;
-                //提示用户结果
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("提示");
-                alert.setHeaderText(result.getMessage());
-                alert.showAndWait();
+                Optional<HttpResult> result = HttpRequests.register(userName.getText(), passWord.getText(),
+                        email.getText());
+                result.ifPresentOrElse(httpResult -> {
+                    //注册成功
+                    if (httpResult.getMessage().equals("注册成功")) {
+                        //提示用户结果
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("提示");
+                        alert.setHeaderText("注册成功");
+                        alert.showAndWait();
+                        //跳转到登录界面
+                        try {
+                            setBack_bt_released(null);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        //注册失败
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("ERROR");
+                        alert.setHeaderText(httpResult.getMessage());
+                        alert.showAndWait();
+                    }
+                }, () -> {
+                    //网络错误
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("网络错误");
+                    alert.showAndWait();
+                });
             });
         });
 
@@ -151,4 +180,42 @@ public class RegisterController {
         primaryStage.setX(event.getScreenX() - oldScreenX + oldStageX);
         primaryStage.setY(event.getScreenY() - oldScreenY + oldStageY);
     }
+
+    @FXML
+    void onKeyReleased1(KeyEvent event) {
+        System.out.println(event.getCode());
+        if (event.getCode() == KeyCode.TAB) {
+            passWord.requestFocus();
+        } else if (event.getCode() == KeyCode.ENTER) {
+            registerBtnReleased(null);
+        }
+    }
+
+    @FXML
+    void onKeyReleased2(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            passWord1.requestFocus();
+        } else if (event.getCode() == KeyCode.ENTER) {
+            registerBtnReleased(null);
+        }
+    }
+
+    @FXML
+    void onKeyReleased3(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            email.requestFocus();
+        } else if (event.getCode() == KeyCode.ENTER) {
+            registerBtnReleased(null);
+        }
+    }
+
+    @FXML
+    void onKeyReleased4(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            userName.requestFocus();
+        } else if (event.getCode() == KeyCode.ENTER) {
+            registerBtnReleased(null);
+        }
+    }
+
 }

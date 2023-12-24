@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 
 public class DIYMapController {
     private double oldStageX;
@@ -120,7 +121,7 @@ public class DIYMapController {
                     //加载fxml文件
                     URL url = getClass().getResource("/Hall.fxml");
                     //加载完fxml文件后，获取其中的root
-                    Parent root = null;
+                    Parent root;
                     try {
                         root = FXMLLoader.load(Objects.requireNonNull(url));
                     } catch (IOException e) {
@@ -365,22 +366,7 @@ public class DIYMapController {
     void launchBtn() {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
-        boolean invalidInput = false;
-        //检查输入
-        if (stepCounts.getText().isEmpty() || targetCounts.getText().isEmpty()) {
-            invalidInput = true;
-        }
-        try {
-            boolean flag1 = Integer.parseInt(stepCounts.getText()) <= 0;
-            boolean flag2 = Integer.parseInt(stepCounts.getText()) >= 999;
-            boolean flag3 = Integer.parseInt(targetCounts.getText()) <= 0;
-            boolean flag4 = Integer.parseInt(targetCounts.getText()) >= 99999;
-            if (flag1 || flag2 || flag3 || flag4) {
-                invalidInput = true;
-            }
-        } catch (Exception ignored) {
-            invalidInput = true;
-        }
+        boolean invalidInput = isInvalidInput();
         if (invalidInput) {//提示
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("错误");
@@ -406,27 +392,52 @@ public class DIYMapController {
         }
         System.out.println(Data);
         //发起请求
-        HttpResult result = HttpRequests.saveDiyMap(User.getToken(), Data.toString());
-        if (result.getCode() == 200) {
-            String url = result.getData().get("url").toString().split("/")[3];
-            //提示框提示，并且保存到剪辑版
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("成功");
-            alert.setHeaderText("成功发布地图,魔法id : " + url + "\n已复制到剪辑版");
-            alert.showAndWait();
-            //复制到剪辑版
-            javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
-            javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
-            content.putString(url);
-            clipboard.setContent(content);
+        Optional<HttpResult> result = HttpRequests.saveDiyMap(User.getToken(), Data.toString());
+        result.ifPresentOrElse(httpResult -> {
+            if (httpResult.getCode() == 200) {
+                String url = httpResult.getData().get("url").toString().split("/")[3];
+                //提示框提示，并且保存到剪辑版
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("成功");
+                alert.setHeaderText("成功发布地图,魔法id : " + url + "\n已复制到剪辑版");
+                alert.showAndWait();
+                //复制到剪辑版
+                javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
+                javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+                content.putString(url);
+                clipboard.setContent(content);
 
-        } else {
-            //提示
+            } else {
+                //提示
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("错误");
+                alert.setHeaderText("保存失败");
+                alert.showAndWait();
+            }
+        }, () -> {
+            //网络错误
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("错误");
-            alert.setHeaderText("保存失败");
+            alert.setTitle("ERROR");
+            alert.setHeaderText("网络错误");
             alert.showAndWait();
+        });
+    }
+
+    private boolean isInvalidInput() {
+        boolean invalidInput = stepCounts.getText().isEmpty() || targetCounts.getText().isEmpty();
+        //检查输入
+        try {
+            boolean flag1 = Integer.parseInt(stepCounts.getText()) <= 0;
+            boolean flag2 = Integer.parseInt(stepCounts.getText()) >= 999;
+            boolean flag3 = Integer.parseInt(targetCounts.getText()) <= 0;
+            boolean flag4 = Integer.parseInt(targetCounts.getText()) >= 99999;
+            if (flag1 || flag2 || flag3 || flag4) {
+                invalidInput = true;
+            }
+        } catch (Exception ignored) {
+            invalidInput = true;
         }
+        return invalidInput;
     }
 
     @FXML
