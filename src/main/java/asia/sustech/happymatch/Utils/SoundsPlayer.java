@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
+
 public class SoundsPlayer {
 
     public static void playSound_btnClick() {
@@ -68,6 +69,5 @@ public class SoundsPlayer {
             clip.start();
         });
         thread.start();
-
     }
 }

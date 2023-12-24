@@ -1,6 +1,9 @@
 package asia.sustech.happymatch.GameController;
 
+import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.NetUtils.HttpResult;
 import asia.sustech.happymatch.Particles.ExplosionEffect;
+import asia.sustech.happymatch.User;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.Utils.SoundsPlayer;
 import javafx.animation.Interpolator;
@@ -629,7 +632,7 @@ public class GameController {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         //判断游戏是否结束
-        if (Map.win == 0) {
+        if (Map.win == 0 && Map.mapId != 0) {
             //询问是否保存地图
             String info = "游戏未完成，是否保存地图？";
             Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("保存", ButtonBar.ButtonData.YES)
@@ -652,24 +655,25 @@ public class GameController {
                     alert1.setTitle("提示");
                     alert1.setHeaderText("保存失败");
                     alert1.showAndWait();
+                    return;
                 }
             }
-            //返回hall
-            Stage primaryStage = (Stage) back.getScene().getWindow();
-            //加载fxml文件
-            URL url = getClass().getResource("/Hall.fxml");
-            //加载完fxml文件后，获取其中的root
-            Parent root;
-            try {
-                root = FXMLLoader.load(Objects.requireNonNull(url));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            //设置场景
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            primaryStage.setScene(scene);
         }
+        //返回hall
+        Stage primaryStage = (Stage) back.getScene().getWindow();
+        //加载fxml文件
+        URL url = getClass().getResource("/Hall.fxml");
+        //加载完fxml文件后，获取其中的root
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(url));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //设置场景
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(scene);
     }
 
     @FXML
@@ -754,28 +758,11 @@ public class GameController {
         }
         //判断是否完成
         if (Map.currentScore >= Map.targetScore) {
-            //提示
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("提示");
-                alert.setHeaderText("恭喜你，你完成了本关");
-                alert.showAndWait();
-            });
+            Map.win = 1;
+            finish();
         } else if (Map.currentStep >= Map.maxStep) {
-
-            Platform.runLater(() -> {
-                //禁止按钮
-                nextStepBtn.setDisable(true);
-                swapBtn.setDisable(true);
-                tipsBtn.setDisable(true);
-                canPropBeUsed = false;
-                //提示
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("提示");
-                alert.setHeaderText("很遗憾，你没有完成本关");
-                alert.showAndWait();
-            });
-
+            Map.win = -1;
+            finish();
         }
     }
 
@@ -907,5 +894,46 @@ public class GameController {
             alert.setHeaderText("道具使用次数已达上限");
             alert.showAndWait();
         }
+    }
+
+    void finish() {
+        //禁止按钮
+        nextStepBtn.setDisable(true);
+        swapBtn.setDisable(true);
+        tipsBtn.setDisable(true);
+        canPropBeUsed = false;
+        //弹出成功提示框
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("提示");
+            if (Map.win == 1) {
+                SoundsPlayer.playSound_Win();
+                alert.setHeaderText("恭喜你，通关成功！");
+                //记录成功通关
+                if (Map.mapId == User.getLevel()) {
+                    Platform.runLater(() -> {
+                        HttpResult result = HttpRequests.updateProcess(User.getToken(), User.getLevel());
+                    });
+                }
+            } else {
+                alert.setHeaderText("很遗憾，通关失败！");
+            }
+            alert.showAndWait();
+            //返回hall
+            Stage primaryStage = (Stage) back.getScene().getWindow();
+            //加载fxml文件
+            URL url = getClass().getResource("/Hall.fxml");
+            //加载完fxml文件后，获取其中的root
+            Parent root;
+            try {
+                root = FXMLLoader.load(Objects.requireNonNull(url));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            //设置场景
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            primaryStage.setScene(scene);
+        });
     }
 }

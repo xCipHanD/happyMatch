@@ -3,21 +3,40 @@ package asia.sustech.happymatch.DIYMap;
 import asia.sustech.happymatch.GameController.Blocks;
 import asia.sustech.happymatch.GameController.GameController;
 import asia.sustech.happymatch.GameController.Map;
+import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.NetUtils.HttpResult;
+import asia.sustech.happymatch.User;
 import asia.sustech.happymatch.Utils.SoundsPlayer;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
 
 public class DIYMapController {
+    private double oldStageX;
+    private double oldStageY;
+    private double oldScreenX;
+    private double oldScreenY;
     @FXML
     private ImageView bg;
 
@@ -82,22 +101,43 @@ public class DIYMapController {
 
     @FXML
     void setOnKeyPressed(KeyEvent event) {
-
-    }
-
-    @FXML
-    void setOnMouseDrag(MouseEvent event) {
-
-    }
-
-    @FXML
-    void setOnMousePressed(MouseEvent event) {
-
+        if (event.getCode() == KeyCode.ESCAPE) {
+            //播放音效
+            SoundsPlayer.playSound_btnClick1();
+            //弹出确认框
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("确认");
+            alert.setHeaderText("是否退出编辑？");
+            alert.setContentText("退出后将不会保存当前编辑的地图");
+            ButtonType buttonTypeYes = new ButtonType("是", ButtonBar.ButtonData.YES);
+            ButtonType buttonTypeNo = new ButtonType("否", ButtonBar.ButtonData.NO);
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+            alert.showAndWait().ifPresent(type -> {
+                if (type == buttonTypeYes) {
+                    //退出
+                    //跳转主页面
+                    Stage primaryStage = (Stage) back.getScene().getWindow();
+                    //加载fxml文件
+                    URL url = getClass().getResource("/Hall.fxml");
+                    //加载完fxml文件后，获取其中的root
+                    Parent root = null;
+                    try {
+                        root = FXMLLoader.load(Objects.requireNonNull(url));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //设置场景
+                    Scene scene = new Scene(root);
+                    scene.setFill(Color.TRANSPARENT);
+                    primaryStage.setScene(scene);
+                }
+            });
+        }
     }
 
     @FXML
     void setBack(MouseEvent event) {
-
+        setOnKeyPressed(new KeyEvent(null, null, null, KeyCode.ESCAPE, false, false, false, false));
     }
 
     @FXML
@@ -297,6 +337,9 @@ public class DIYMapController {
     void setProp(int prop) {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
+        if (selectedBlockX == -1 || selectedBlockY == -1) {
+            return;
+        }
         //更新地图
         Map.mapData[selectedBlockX][selectedBlockY] = prop;
         //刷新地图
@@ -345,7 +388,65 @@ public class DIYMapController {
             alert.showAndWait();
             return;
         }
+        //设置地图数据
+        for (int i = 0; i < Map.mapData.length; i++) {
+            for (int j = 0; j < Map.mapData.length; j++) {
+                Map.mapData[i][j] = Map.mapData[i][j] < 7 ? Map.mapData[i][j] : Map.mapData[i][j] - 10;
+            }
+        }
         //构建地图数据
-        
+        StringBuilder Data = new StringBuilder(String.format("%d %d %d %d %d %d %d \\n", 0, maxBlockCount,
+                0, Integer.parseInt(stepCounts.getText()),
+                0, Integer.parseInt(targetCounts.getText()), 0));
+        for (int[] ints : Map.mapData) {
+            for (int j = 0; j < Map.mapData.length; j++) {
+                Data.append(ints[j]).append(" ");
+            }
+            Data.append("\\n");
+        }
+        System.out.println(Data);
+        //发起请求
+        HttpResult result = HttpRequests.saveDiyMap(User.getToken(), Data.toString());
+        if (result.getCode() == 200) {
+            String url = result.getData().get("url").toString().split("/")[3];
+            //提示框提示，并且保存到剪辑版
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("成功");
+            alert.setHeaderText("成功发布地图,魔法id : " + url + "\n已复制到剪辑版");
+            alert.showAndWait();
+            //复制到剪辑版
+            javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
+            javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+            content.putString(url);
+            clipboard.setContent(content);
+
+        } else {
+            //提示
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("错误");
+            alert.setHeaderText("保存失败");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    void setOnMousePressed(MouseEvent event) {
+        try {
+            Stage primaryStage = (Stage) back.getScene().getWindow();
+
+            oldStageX = primaryStage.getX();
+            oldStageY = primaryStage.getY();
+            oldScreenX = event.getScreenX();
+            oldScreenY = event.getScreenY();
+        } catch (Exception e) {
+            //do nothing
+        }
+    }
+
+    @FXML
+    void setOnMouseDrag(MouseEvent event) {
+        Stage primaryStage = (Stage) back.getScene().getWindow();
+        primaryStage.setX(event.getScreenX() - oldScreenX + oldStageX);
+        primaryStage.setY(event.getScreenY() - oldScreenY + oldStageY);
     }
 }

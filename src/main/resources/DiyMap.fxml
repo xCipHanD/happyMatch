@@ -787,7 +787,7 @@
                 <Font size="18.0" />
             </font>
         </Text>
-      <Text fill="#fffc2b" layoutX="165.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-stroke: rgba(205, 236, 255, 0.5);" text="自定义地图">
+      <Text fill="#fffc2b" layoutX="165.0" layoutY="99.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-stroke: rgba(205, 236, 255, 0.5);" text="自定义地图">
          <font>
             <Font size="35.0" />
          </font>

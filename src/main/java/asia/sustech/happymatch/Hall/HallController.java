@@ -429,7 +429,7 @@ public class HallController {
             //检查输入
             if (FormatValidator.isDiyCodeInvalid(result.get())) {
                 //提示框
-                String info = "地图信息格式错误！";
+                String info = "获取地图失败！请检查地图ID是否正确";
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
                         ButtonBar.ButtonData.YES));
                 alert.setHeaderText(null);
@@ -439,9 +439,29 @@ public class HallController {
             }
             //获取地图信息
             Map map = Map.getDiyMap(result.get());
+            if (map == null) {
+                //提示框
+                String info = "获取地图失败！请检查地图ID是否存在";
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                        ButtonBar.ButtonData.YES));
+                alert.setHeaderText(null);
+                alert.setTitle("提示");
+                alert.showAndWait();
+                return;
+            }
+            //跳转页面
+            Stage primaryStage = (Stage) coinsText.getScene().getWindow();
+            //加载fxml文件
+            URL url = getClass().getResource("/Game.fxml");
+            //加载完fxml文件后，获取其中的root
+            Parent root = FXMLLoader.load(Objects.requireNonNull(url));
+            //设置场景
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            primaryStage.setScene(scene);
+            //打印地图信息
             System.out.printf("关卡:%d\n", Map.mapId);
             System.out.println(Arrays.deepToString(Map.mapData));
-
         }
     }
 

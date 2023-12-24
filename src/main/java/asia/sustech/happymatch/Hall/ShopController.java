@@ -1,6 +1,7 @@
 package asia.sustech.happymatch.Hall;
 
 import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.NetUtils.HttpResult;
 import asia.sustech.happymatch.Utils.SoundsPlayer;
 import asia.sustech.happymatch.User;
 import com.alibaba.fastjson.JSONObject;
@@ -8,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -84,13 +86,30 @@ public class ShopController {
         processText.setText("已拥有 : " + count1);
     }
 
-    //购买1
+    //购买1号物品（仅作功能展示）
     @FXML
     void buyBtnReleased() {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         // 购买
-        JSONObject data = HttpRequests.buyItem(User.getToken(), 1).getData();
+        HttpResult result = HttpRequests.buyItem(User.getToken(), 1);
+        //判断是否购买成功
+        if (result.getMessage().equals("成功")) {
+            //购买成功
+            //设置coins
+            User.setCoins(User.getCoins() - 10);
+            coinsText.setText(String.valueOf(User.getCoins()));
+            //设置process
+            processText.setText("已拥有 : " + JSONObject.parseObject(result.getData().getString("1")).getString("count"));
+        } else {
+            //购买失败
+            //提示
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("购买失败");
+            alert.setHeaderText(null);
+            alert.setContentText("金币不足");
+            alert.showAndWait();
+        }
     }
 
     //esc退出

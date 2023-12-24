@@ -271,4 +271,24 @@ public class HttpRequests {
             throw new RuntimeException(e);
         }
     }
+
+    public static HttpResult updateProcess(String token, int currentLevel) {
+        try {
+            String result = HttpRequest.sendGetRequest(String.format(API.UPDATE_PROCESS.toString(), token,
+                    currentLevel + 1));
+            //fastjson解析result
+            JSONObject jsonObject = JSON.parseObject(result);
+            int code = jsonObject.getInteger("code");
+            String message = jsonObject.getString("msg");
+
+            if (code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                return new HttpResult(code, message, token, data);
+            } else {
+                return new HttpResult(code, message, token, new JSONObject());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
