@@ -43,6 +43,8 @@ public class SoundsPlayer {
 
     public static void playSound_Win() {play("/Sounds/win.wav");}
 
+    public static void playSound_Lose() {play("/Sounds/lose.wav");}
+
     public static void playSound_fall() {play("/Sounds/fall.wav");}
 
     private static void play(String audioFilePath) {
@@ -70,4 +72,7 @@ public class SoundsPlayer {
         });
         thread.start();
     }
+
+
+    public static void playSound_Unbelievable() {play("/Sounds/unbelievable.wav");}
 }

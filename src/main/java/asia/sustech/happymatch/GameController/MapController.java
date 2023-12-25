@@ -348,7 +348,7 @@ public class MapController {
     //是否有下一步
     public static boolean hasNextStep(int[][] map) {
         // 1. 前置检查：目标是否达成，步数是否用完，是否有道具
-        if (Map.currentScore >= Map.targetScore || Map.currentStep >= Map.maxStep || Map.swapMapItemUsedCount >= 3) {
+        if (Map.currentScore >= Map.targetScore || Map.swapMapItemUsedCount >= 3) {
             return false;
         }
         // 2. 是否有空位

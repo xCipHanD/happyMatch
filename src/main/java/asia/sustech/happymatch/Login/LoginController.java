@@ -52,7 +52,7 @@ public class LoginController {
     //初始化
     @FXML
     void initialize() {
-        userName.requestFocus();
+        Platform.runLater(() -> {userName.requestFocus();});
     }
 
     //清空文本
@@ -271,6 +271,13 @@ public class LoginController {
         } else if (event.getCode() == KeyCode.TAB) {
             userName.requestFocus();
         }
+    }
+
+    @FXML
+    void setMin_window(MouseEvent event) {
+        //设置窗口最小化
+        Stage primaryStage = (Stage) close_window.getScene().getWindow();
+        primaryStage.setIconified(true);
     }
 
     @FXML

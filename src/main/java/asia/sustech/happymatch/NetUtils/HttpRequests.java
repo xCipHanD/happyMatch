@@ -44,6 +44,7 @@ public class HttpRequests {
         try {
             String result =
                     HttpRequest.sendGetRequest(String.format(API.GET_CODE.toString(), email));
+            System.out.println(result);
             //fastjson解析result
             JSONObject jsonObject = JSON.parseObject(result);
             int code = jsonObject.getInteger("code");

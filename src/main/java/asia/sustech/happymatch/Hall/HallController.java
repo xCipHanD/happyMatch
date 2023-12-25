@@ -508,6 +508,12 @@ public class HallController {
         }
     }
 
+    @FXML
+    void setMin_window(MouseEvent event) {
+        Stage primaryStage = (Stage) rightPane.getScene().getWindow();
+        primaryStage.setIconified(true);
+    }
+
     //切换到游戏场景
     private void goToGamePage() {
         //跳转页面

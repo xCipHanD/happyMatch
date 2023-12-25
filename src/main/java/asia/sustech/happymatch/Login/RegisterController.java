@@ -59,7 +59,7 @@ public class RegisterController {
 
     @FXML
     void initialize() {
-        userName.requestFocus();
+        Platform.runLater(() -> {userName.requestFocus();});
     }
 
     @FXML
@@ -183,7 +183,6 @@ public class RegisterController {
 
     @FXML
     void onKeyReleased1(KeyEvent event) {
-        System.out.println(event.getCode());
         if (event.getCode() == KeyCode.TAB) {
             passWord.requestFocus();
         } else if (event.getCode() == KeyCode.ENTER) {
@@ -198,6 +197,12 @@ public class RegisterController {
         } else if (event.getCode() == KeyCode.ENTER) {
             registerBtnReleased(null);
         }
+    }
+
+    @FXML
+    void setMin_window(MouseEvent event) {
+        Stage primaryStage = (Stage) back_img.getScene().getWindow();
+        primaryStage.setIconified(true);
     }
 
     @FXML

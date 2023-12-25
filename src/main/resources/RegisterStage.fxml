@@ -100,5 +100,21 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <ImageView fx:id="m_window" fitHeight="31.0" fitWidth="19.0" layoutX="434.0" layoutY="34.0" onMouseReleased="#setMin_window" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@minimize.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="close_window" fitHeight="51.0" fitWidth="39.0" layoutX="453.0" layoutY="24.0" onMouseReleased="#setBack_bt_released" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@Login/cross.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
