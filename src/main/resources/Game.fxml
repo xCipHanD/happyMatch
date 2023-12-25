@@ -692,7 +692,7 @@
             <Image url="@back.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="bgmBt" fitHeight="41.0" fitWidth="35.0" layoutX="441.0" layoutY="26.0" onMousePressed="#bgmBtPressed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bgmBt" fitHeight="31.0" fitWidth="31.0" layoutX="395.0" layoutY="28.0" onMousePressed="#bgmBtPressed" pickOnBounds="true" preserveRatio="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -724,5 +724,18 @@
             </Pane>
          </children>
       </HBox>
+      <ImageView fx:id="m_window" fitHeight="23.0" fitWidth="27.0" layoutX="441.0" layoutY="32.0" onMouseReleased="#setMin_window" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@minimize.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="particle" fitHeight="327.0" fitWidth="495.0" layoutX="10.0" layoutY="113.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Game/firework.gif" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

@@ -1,7 +1,6 @@
 package asia.sustech.happymatch.Hall;
 
 import asia.sustech.happymatch.GameController.Map;
-import asia.sustech.happymatch.Properties;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.NetUtils.HttpRequests;
 import asia.sustech.happymatch.NetUtils.HttpResult;
@@ -80,32 +79,42 @@ public class HallController {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         //排行榜
-        HttpResult result = HttpRequests.getRankList(User.getToken());
-        if (result.getCode() == 200) {
-            //成功
-            //解析result
-            String rank1 = JSONObject.parseObject(result.getData().getString("1")).getString("username");
-            String rank1_level = JSONObject.parseObject(result.getData().getString("1")).getString("level");
-            String rank2 = JSONObject.parseObject(result.getData().getString("2")).getString("username");
-            String rank2_level = JSONObject.parseObject(result.getData().getString("2")).getString("level");
-            String rank3 = JSONObject.parseObject(result.getData().getString("3")).getString("username");
-            String rank3_level = JSONObject.parseObject(result.getData().getString("3")).getString("level");
-            //提示框
-            String info = String.format("第一名：%s，等级：%s\n第二名：%s，等级：%s\n第三名：%s，等级：%s", rank1, rank1_level, rank2,
-                    rank2_level, rank3, rank3_level);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES));
-            alert.setHeaderText(null);
-            alert.setTitle("排行榜");
+        Optional<HttpResult> result = HttpRequests.getRankList(User.getToken());
+        result.ifPresentOrElse(httpResult -> {
+            if (httpResult.getCode() == 200) {
+                //成功
+                //解析result
+                String rank1 = JSONObject.parseObject(httpResult.getData().getString("1")).getString("username");
+                String rank1_level = JSONObject.parseObject(httpResult.getData().getString("1")).getString("level");
+                String rank2 = JSONObject.parseObject(httpResult.getData().getString("2")).getString("username");
+                String rank2_level = JSONObject.parseObject(httpResult.getData().getString("2")).getString("level");
+                String rank3 = JSONObject.parseObject(httpResult.getData().getString("3")).getString("username");
+                String rank3_level = JSONObject.parseObject(httpResult.getData().getString("3")).getString("level");
+                //提示框
+                String info = String.format("第一名：%s，等级：%s\n第二名：%s，等级：%s\n第三名：%s，等级：%s", rank1, rank1_level, rank2,
+                        rank2_level, rank3, rank3_level);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                        ButtonBar.ButtonData.YES));
+                alert.setHeaderText(null);
+                alert.setTitle("排行榜");
+                alert.showAndWait();
+            } else {
+                //失败
+                //提示框
+                String info = "获取排行榜失败！" + httpResult.getMessage();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                        ButtonBar.ButtonData.YES));
+                alert.setHeaderText(null);
+                alert.setTitle("提示");
+                alert.showAndWait();
+            }
+        }, () -> {
+            //网络错误
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("网络错误");
             alert.showAndWait();
-        } else {
-            //失败
-            //提示框
-            String info = "获取排行榜失败！" + result.getMessage();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定", ButtonBar.ButtonData.YES));
-            alert.setHeaderText(null);
-            alert.setTitle("提示");
-            alert.showAndWait();
-        }
+        });
     }
 
     //商店按钮
@@ -131,28 +140,45 @@ public class HallController {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         //执行签到请求
-        HttpResult result = HttpRequests.signIn(User.getToken());
-        if (result.getCode() == 200) {
-            //更新金币
-            HttpResult result1 = HttpRequests.getUserInfo(User.getToken());
-            User.setCoins(result1.getData().getInteger("coins"));
-            genderUserInfo();
-            //成功提示框
-            String info = "签到成功！";
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
-                    ButtonBar.ButtonData.YES));
-            alert.setHeaderText(null);
-            alert.setTitle("提示");
+        Optional<HttpResult> result = HttpRequests.signIn(User.getToken());
+        result.ifPresentOrElse(httpResult -> {
+            if (httpResult.getCode() == 200) {
+                //更新金币
+                Optional<HttpResult> result1 = HttpRequests.getUserInfo(User.getToken());
+                result1.ifPresentOrElse(httpResult1 -> {
+                    User.setCoins(httpResult1.getData().getInteger("coins"));
+                    genderUserInfo();
+                    //成功提示框
+                    String info = "签到成功！";
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                            ButtonBar.ButtonData.YES));
+                    alert.setHeaderText(null);
+                    alert.setTitle("提示");
+                    alert.showAndWait();
+                }, () -> {
+                    //网络错误
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("网络错误");
+                    alert.showAndWait();
+                });
+            } else {
+                //失败提示框
+                String info = "签到失败！" + httpResult.getMessage();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                        ButtonBar.ButtonData.YES));
+                alert.setHeaderText(null);
+                alert.setTitle("提示");
+                alert.showAndWait();
+            }
+        }, () -> {
+            //网络错误
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("网络错误");
             alert.showAndWait();
-        } else {
-            //失败提示框
-            String info = "签到失败！" + result.getMessage();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
-                    ButtonBar.ButtonData.YES));
-            alert.setHeaderText(null);
-            alert.setTitle("提示");
-            alert.showAndWait();
-        }
+        });
+
     }
 
     //自定义地图按钮
@@ -214,29 +240,37 @@ public class HallController {
                 Thread thread = new Thread(() -> {
                     //修改头像请求
                     Platform.runLater(() -> {
-                        HttpResult result = HttpRequests.changeAvatar(User.getToken(), base64);
-                        if (result.getCode() == 200) {
-                            //成功
-                            //提示框
-                            String info = "修改头像成功！";
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
-                                    ButtonBar.ButtonData.YES));
-                            alert.setHeaderText(null);
-                            alert.setTitle("提示");
+                        Optional<HttpResult> result = HttpRequests.changeAvatar(User.getToken(), base64);
+                        result.ifPresentOrElse(httpResult -> {
+                            if (httpResult.getCode() == 200) {
+                                //成功
+                                //提示框
+                                String info = "修改头像成功！";
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                                        ButtonBar.ButtonData.YES));
+                                alert.setHeaderText(null);
+                                alert.setTitle("提示");
+                                alert.showAndWait();
+                                //更新头像
+                                User.setAvatarURL(httpResult.getData().getString("avatarURL"));
+                                avatar.setImage(User.getAvatar());
+                            } else {
+                                //失败
+                                //提示框
+                                String info = "修改头像失败！" + httpResult.getMessage();
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                                        ButtonBar.ButtonData.YES));
+                                alert.setHeaderText(null);
+                                alert.setTitle("提示");
+                                alert.showAndWait();
+                            }
+                        }, () -> {
+                            //网络错误
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("ERROR");
+                            alert.setHeaderText("网络错误");
                             alert.showAndWait();
-                            //更新头像
-                            User.setAvatarURL(result.getData().getString("avatarURL"));
-                            avatar.setImage(User.getAvatar());
-                        } else {
-                            //失败
-                            //提示框
-                            String info = "修改头像失败！" + result.getMessage();
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
-                                    ButtonBar.ButtonData.YES));
-                            alert.setHeaderText(null);
-                            alert.setTitle("提示");
-                            alert.showAndWait();
-                        }
+                        });
                     });
                 });
                 thread.start();
@@ -338,7 +372,16 @@ public class HallController {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         //获取进度信息
-        HttpResult result = HttpRequests.getProcessMap(User.getToken());
+        Optional<HttpResult> httpResult = HttpRequests.getProcessMap(User.getToken());
+        if (httpResult.isEmpty()) {
+            //网络错误
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("网络错误");
+            alert.showAndWait();
+            return;
+        }
+        HttpResult result = httpResult.get();
         if (result.getCode() != 200) {
             //提示框
             String info = "获取进度失败！";
@@ -429,7 +472,7 @@ public class HallController {
             //检查输入
             if (FormatValidator.isDiyCodeInvalid(result.get())) {
                 //提示框
-                String info = "地图信息格式错误！";
+                String info = "获取地图失败！请检查地图ID是否正确";
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
                         ButtonBar.ButtonData.YES));
                 alert.setHeaderText(null);
@@ -439,10 +482,36 @@ public class HallController {
             }
             //获取地图信息
             Map map = Map.getDiyMap(result.get());
+            if (map == null) {
+                //提示框
+                String info = "获取地图失败！请检查地图ID是否存在";
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("确定",
+                        ButtonBar.ButtonData.YES));
+                alert.setHeaderText(null);
+                alert.setTitle("提示");
+                alert.showAndWait();
+                return;
+            }
+            //跳转页面
+            Stage primaryStage = (Stage) coinsText.getScene().getWindow();
+            //加载fxml文件
+            URL url = getClass().getResource("/Game.fxml");
+            //加载完fxml文件后，获取其中的root
+            Parent root = FXMLLoader.load(Objects.requireNonNull(url));
+            //设置场景
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            primaryStage.setScene(scene);
+            //打印地图信息
             System.out.printf("关卡:%d\n", Map.mapId);
             System.out.println(Arrays.deepToString(Map.mapData));
-
         }
+    }
+
+    @FXML
+    void setMin_window(MouseEvent event) {
+        Stage primaryStage = (Stage) rightPane.getScene().getWindow();
+        primaryStage.setIconified(true);
     }
 
     //切换到游戏场景
@@ -455,8 +524,7 @@ public class HallController {
         Parent root = null;
         try {
             root = FXMLLoader.load(Objects.requireNonNull(url));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         //设置场景
         Scene scene = new Scene(root);

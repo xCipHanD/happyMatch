@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -28,6 +29,9 @@ public class LoginStage extends Application {
         //设置窗体
         primaryStage.setResizable(false);
         primaryStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+        //从 resources 中获取图片
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/blocks/6" +
+                ".png"))));
         //设置场景
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);

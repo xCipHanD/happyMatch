@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ForgetPwdController {
     private double oldStageX;
@@ -117,26 +118,35 @@ public class ForgetPwdController {
         }
         //修改密码
         Thread thread = new Thread(() -> {
-            //发起登录请求
+            //发起修改密码请求
             Platform.runLater(() -> {
-                HttpResult result = HttpRequests.changePwd(email.getText(), passWord.getText(), code.getText());
-                if (result.getCode() == 200) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("SUCCESS");
-                    alert.setHeaderText("密码修改成功");
-                    alert.showAndWait();
-                    //返回主窗口
-                    try {
-                        setBack(null);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                Optional<HttpResult> result = HttpRequests.changePwd(email.getText(), passWord.getText(),
+                        code.getText());
+                result.ifPresentOrElse(httpResult -> {
+                    if (httpResult.getCode() == 200) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("SUCCESS");
+                        alert.setHeaderText("密码修改成功");
+                        alert.showAndWait();
+                        //返回主窗口
+                        try {
+                            setBack(null);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("ERROR");
+                        alert.setHeaderText(httpResult.getMessage());
+                        alert.showAndWait();
                     }
-                } else {
+                }, () -> {
+                    //网络错误
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
-                    alert.setHeaderText(result.getMessage());
+                    alert.setHeaderText("网络错误");
                     alert.showAndWait();
-                }
+                });
             });
         });
 
@@ -181,19 +191,27 @@ public class ForgetPwdController {
             //发起登录请求
             Platform.runLater(() -> {
                 //发送验证码
-                HttpResult result = HttpRequests.getCode(email.getText());
-                if (result.getCode() == 200) {
-                    isCodeSent = true;
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("SUCCESS");
-                    alert.setHeaderText("验证码已发送");
-                    alert.showAndWait();
-                } else {
+                Optional<HttpResult> result = HttpRequests.getCode(email.getText());
+                result.ifPresentOrElse(httpResult -> {
+                    if (httpResult.getCode() == 200) {
+                        isCodeSent = true;
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("SUCCESS");
+                        alert.setHeaderText("验证码已发送");
+                        alert.showAndWait();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("ERROR");
+                        alert.setHeaderText(httpResult.getMessage());
+                        alert.showAndWait();
+                    }
+                }, () -> {
+                    //网络错误
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
-                    alert.setHeaderText(result.getMessage());
+                    alert.setHeaderText("网络错误");
                     alert.showAndWait();
-                }
+                });
             });
         });
 

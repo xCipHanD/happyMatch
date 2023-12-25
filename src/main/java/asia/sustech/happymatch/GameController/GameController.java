@@ -1,9 +1,14 @@
 package asia.sustech.happymatch.GameController;
 
+import asia.sustech.happymatch.NetUtils.HttpRequests;
+import asia.sustech.happymatch.NetUtils.HttpResult;
 import asia.sustech.happymatch.Particles.ExplosionEffect;
+import asia.sustech.happymatch.User;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.Utils.SoundsPlayer;
 import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -32,6 +37,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameController {
@@ -91,6 +97,10 @@ public class GameController {
     private int selectedBlockY1 = -1;
     private int selectedBlockX2 = -1;
     private int selectedBlockY2 = -1;
+    @FXML
+    private ImageView particle;
+
+    private int accumulatedScore = 0;
 
     //自动模式
     private boolean autoMode = false;
@@ -139,6 +149,10 @@ public class GameController {
                 getPaneByGridPaneCoordinates(board, i, j).setOnMouseReleased(this::blockBtnReleased);
             }
         }
+        //清除particle
+        particle.setImage(null);
+        //初始化accumulatedScore
+        accumulatedScore = 0;
         //渲染道具
         prop1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/items/item1.png"))));
         prop2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/items/item2.png"))));
@@ -426,6 +440,7 @@ public class GameController {
                     int scoreToBeAdded = MapController.calcCountsAfterMatches(Map.mapData);
                     Map.currentScore += scoreToBeAdded;
                     Map.currentStep++;
+                    accumulatedScore += scoreToBeAdded;
                     //更新文字
                     updateText();
                     //播放音效
@@ -629,7 +644,7 @@ public class GameController {
         //播放音效
         SoundsPlayer.playSound_btnClick1();
         //判断游戏是否结束
-        if (Map.win == 0) {
+        if (Map.win == 0 && Map.mapId != 0) {
             //询问是否保存地图
             String info = "游戏未完成，是否保存地图？";
             Alert alert = new Alert(Alert.AlertType.INFORMATION, info, new ButtonType("保存", ButtonBar.ButtonData.YES)
@@ -652,24 +667,25 @@ public class GameController {
                     alert1.setTitle("提示");
                     alert1.setHeaderText("保存失败");
                     alert1.showAndWait();
+                    return;
                 }
             }
-            //返回hall
-            Stage primaryStage = (Stage) back.getScene().getWindow();
-            //加载fxml文件
-            URL url = getClass().getResource("/Hall.fxml");
-            //加载完fxml文件后，获取其中的root
-            Parent root;
-            try {
-                root = FXMLLoader.load(Objects.requireNonNull(url));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            //设置场景
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            primaryStage.setScene(scene);
         }
+        //返回hall
+        Stage primaryStage = (Stage) back.getScene().getWindow();
+        //加载fxml文件
+        URL url = getClass().getResource("/Hall.fxml");
+        //加载完fxml文件后，获取其中的root
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(url));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //设置场景
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(scene);
     }
 
     @FXML
@@ -695,6 +711,7 @@ public class GameController {
         } else if (MapController.calcCountsAfterMatches(Map.mapData) != 0) {//如果可以消除，就消除
             //计算分数
             int scoreToBeAdded = MapController.calcCountsAfterMatches(Map.mapData);
+            accumulatedScore += scoreToBeAdded;
             Map.currentScore += scoreToBeAdded;
             //更新文字
             updateText();
@@ -716,13 +733,13 @@ public class GameController {
             //渲染地图
             Render(Map.mapData);
             //打印地图
-            System.out.println("消除后的地图");
-            for (int i = 0; i < Map.mapData.length; i++) {
-                for (int j = 0; j < Map.mapData.length; j++) {
-                    System.out.printf(Map.mapData[i][j] + " ");
-                }
-                System.out.println();
-            }
+//            System.out.println("消除后的地图");
+//            for (int i = 0; i < Map.mapData.length; i++) {
+//                for (int j = 0; j < Map.mapData.length; j++) {
+//                    System.out.printf(Map.mapData[i][j] + " ");
+//                }
+//                System.out.println();
+//            }
         } else if (MapController.hasEmpty(Map.mapData)) {//是否需要生成新的方块
             System.out.println("生成新的方块");
             MapController.fillEmpty(Map.mapData, Map.blockCount);
@@ -746,7 +763,56 @@ public class GameController {
             swapBtn.setDisable(true);
             tipsBtn.setDisable(true);
             canPropBeUsed = false;
+            System.out.println(accumulatedScore);
         } else {
+            //播放音效
+            if (accumulatedScore >= 60 && accumulatedScore < 100 && Map.win == 0) {
+                SoundsPlayer.playSound_Wow();
+                //展示特效
+                Platform.runLater(() -> new Thread(() -> {
+                    particle.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/tips" +
+                            "/good" +
+                            ".png"))));
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    particle.setImage(null);
+                }).start());
+            } else if (accumulatedScore >= 100 && accumulatedScore < 140 && Map.win == 0) {
+                SoundsPlayer.playSound_Wow();
+                SoundsPlayer.playSound_Amazing();
+                //展示特效
+
+                Platform.runLater(() -> new Thread(() -> {
+                    particle.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/tips" +
+                            "/amazing" +
+                            ".png"))));
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    particle.setImage(null);
+                }).start());
+            } else if (accumulatedScore >= 140 && Map.win == 0) {
+                SoundsPlayer.playSound_Wow();
+                SoundsPlayer.playSound_Unbelievable();
+                //展示特效
+
+                Platform.runLater(() -> new Thread(() -> {
+                    particle.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/tips" +
+                            "/unbelievable.png"))));
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    particle.setImage(null);
+                }).start());
+            }
+            accumulatedScore = 0;
             nextStepBtn.setDisable(true);
             swapBtn.setDisable(false);
             tipsBtn.setDisable(false);
@@ -754,28 +820,11 @@ public class GameController {
         }
         //判断是否完成
         if (Map.currentScore >= Map.targetScore) {
-            //提示
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("提示");
-                alert.setHeaderText("恭喜你，你完成了本关");
-                alert.showAndWait();
-            });
-        } else if (Map.currentStep >= Map.maxStep) {
-
-            Platform.runLater(() -> {
-                //禁止按钮
-                nextStepBtn.setDisable(true);
-                swapBtn.setDisable(true);
-                tipsBtn.setDisable(true);
-                canPropBeUsed = false;
-                //提示
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("提示");
-                alert.setHeaderText("很遗憾，你没有完成本关");
-                alert.showAndWait();
-            });
-
+            Map.win = 1;
+            finish();
+        } else if (Map.currentStep >= Map.maxStep && !MapController.hasNextStep(Map.mapData)) {
+            Map.win = -1;
+            finish();
         }
     }
 
@@ -784,6 +833,14 @@ public class GameController {
         //更新文字
         scoreText.setText(String.format("分数 : %s/%s", Map.currentScore, Map.targetScore));
         stepsText.setText(String.format("剩余 %s 步", Map.maxStep - Map.currentStep));
+    }
+
+    @FXML
+    void setMin_window(MouseEvent event) {
+        //播放音效
+        SoundsPlayer.playSound_btnClick1();
+        Stage primaryStage = (Stage) board.getScene().getWindow();
+        primaryStage.setIconified(true);
     }
 
     @FXML
@@ -907,5 +964,65 @@ public class GameController {
             alert.setHeaderText("道具使用次数已达上限");
             alert.showAndWait();
         }
+    }
+
+    void finish() {
+        //禁止按钮
+        nextStepBtn.setDisable(true);
+        swapBtn.setDisable(true);
+        tipsBtn.setDisable(true);
+        canPropBeUsed = false;
+        //弹出成功提示框
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("提示");
+            if (Map.win == 1) {
+                SoundsPlayer.playSound_Win();
+                alert.setHeaderText("恭喜你，通关成功！");
+                //播放特效
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    particle.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Game/firework" +
+                            ".gif"))));
+                }).start();
+                //记录成功通关
+                if (Map.mapId == User.getLevel()) {
+                    Optional<HttpResult> result = HttpRequests.updateProcess(User.getToken(), User.getLevel());
+                    if (User.getLevel() < 50) {
+                        User.setLevel(User.getLevel() + 1);
+                    }
+                    if (result.isEmpty()) {
+                        //提示网络错误
+                        Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                        alert1.setTitle("提示");
+                        alert1.setHeaderText("网络错误,无法上传游戏进度");
+                        alert1.showAndWait();
+                    }
+                }
+            } else {
+                SoundsPlayer.playSound_Lose();
+                alert.setHeaderText("很遗憾，通关失败！");
+            }
+            alert.showAndWait();
+            //返回hall
+            Stage primaryStage = (Stage) back.getScene().getWindow();
+            //加载fxml文件
+            URL url = getClass().getResource("/Hall.fxml");
+            //加载完fxml文件后，获取其中的root
+            Parent root;
+            try {
+                root = FXMLLoader.load(Objects.requireNonNull(url));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            //设置场景
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            primaryStage.setScene(scene);
+        });
     }
 }
