@@ -732,7 +732,7 @@
             <Image url="@minimize.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="particle" fitHeight="327.0" fitWidth="495.0" layoutX="10.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="particle" fitHeight="327.0" fitWidth="495.0" layoutX="10.0" layoutY="113.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Game/firework.gif" />
          </image>
