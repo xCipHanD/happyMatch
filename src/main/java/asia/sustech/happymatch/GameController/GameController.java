@@ -7,8 +7,6 @@ import asia.sustech.happymatch.User;
 import asia.sustech.happymatch.Utils.BGMPlayer;
 import asia.sustech.happymatch.Utils.SoundsPlayer;
 import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -25,9 +23,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -846,7 +842,7 @@ public class GameController {
     @FXML
     void tipsBtnReleased() {
         //播放音效
-        SoundsPlayer.playSound_btnClick1();
+        SoundsPlayer.playSound_getTips();
         //获取提示
         int[][] tips = MapController.getTips(Map.mapData);
         if (tips == null) {
@@ -1022,7 +1018,10 @@ public class GameController {
             //设置场景
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
-            primaryStage.setScene(scene);
+            try {
+                primaryStage.setScene(scene);
+            } catch (Exception ignored) {
+            }
         });
     }
 }
