@@ -515,7 +515,7 @@ public class HallController {
     }
 
     //切换到游戏场景
-    private void goToGamePage() {
+    public void goToGamePage() {
         //跳转页面
         Stage primaryStage = (Stage) coinsText.getScene().getWindow();
         //加载fxml文件
