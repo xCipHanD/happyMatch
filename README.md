@@ -33,5 +33,8 @@ CS109期末project，模仿开心消消乐ui和游戏设计。
 	- [x] 游戏界面 [GameController](src\main\java\asia\sustech\happymatch\GameController\GameController.java) -> [Game.fxml](src\main\resources\Game.fxml)
 	- [ ] 结算界面
 
+## 致谢
+ - [JavaLin - 非常棒的web服务框架](https://javalin.io/)
+
 ## 写在后面
 第一次写project，架构和代码都不成熟，存在许多屎山成分。后端并不安全，日后慢慢维护吧。
