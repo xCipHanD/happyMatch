@@ -12,8 +12,6 @@ public class FormatValidator {
     private static final String userNameRegex = "^[a-zA-Z0-9_-]{4,10}$";
     private static final String tokenRegex = "^[a-zA-Z0-9]{32}$";
 
-    private static final String salt = "heLlomYj@VApROJEcTbyXC1Ph4nd";
-
     public static boolean isEmailInvalid(String email) {
         if (email == null || email.equals("null") || email.length() > 50) return true;
         return !email.matches(emailRegex);

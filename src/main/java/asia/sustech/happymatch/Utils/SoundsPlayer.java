@@ -75,4 +75,8 @@ public class SoundsPlayer {
 
 
     public static void playSound_Unbelievable() {play("/Sounds/unbelievable.wav");}
+
+    public static void playSound_getTips() {
+        play("/Sounds/tips.wav");
+    }
 }
